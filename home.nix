@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs,inputs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -82,12 +82,53 @@
     vimAlias = true;          # symlink vim → nvim
   };
 
+
+programs.zsh = {
+  enable = true;
+  autosuggestion.enable = true;
+  syntaxHighlighting.enable = true;
+ oh-my-zsh = { # "ohMyZsh" without Home Manager
+    enable = true;
+    plugins = [ "git" "thefuck" ];
+    theme = "robbyrussell";
+  };
+
+  shellAliases = {
+    ll = "ls -l";
+    update = "home-manager switch";
+    lg= "lazygit";
+    
+  };
+  history.size = 10000;
+  initExtra = ''
+export PATH="$PATH:/home/jack/.local/bin"
+path+=('/home/jack/path/')
+alias docker=podman
+[ -f "$HOME/.env" ] && source "$HOME/.env"
+PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+ # Nix
+ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+ fi
+ # End Nix
+		'';
+};
+
 xdg.configFile."nvim" = {
   source = ./nvim;  # directory or file in your dotfiles repo
   recursive = true;                      # copy whole directory tree
 };
 
-	
+xdg.configFile.".env" = {
+  source = ./.env;   # absolute path outside store
+  target = ".env";
+};
+
+
+
+	#  home-manager.sharedModules = [
+	#    inputs.sops-nix.homeManagerModules.sops
+	#   ];
 
 
   # Let Home Manager install and manage itself.
