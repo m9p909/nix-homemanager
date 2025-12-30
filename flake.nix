@@ -1,4 +1,3 @@
-
 {
   description = "Home Manager configuration of jack";
 
@@ -10,7 +9,8 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:   # expose sops-nix
+  outputs =
+    { nixpkgs, home-manager, ... }: # expose sops-nix
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -24,4 +24,3 @@
       };
     };
 }
-

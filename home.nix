@@ -20,10 +20,16 @@
   home.packages = [
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
-		#pkgs.hello
+    #pkgs.hello
     pkgs.nil
     pkgs.uv
-   (pkgs.python313.withPackages (ps: with ps; [requests rich]))
+    pkgs.nixfmt-rfc-style
+    (pkgs.python313.withPackages (
+      ps: with ps; [
+        requests
+        rich
+      ]
+    ))
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -51,15 +57,13 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
-	".ideavimrc" = {
-			source = ./config/.ideavimrc;
-		};
-	".tmux.conf" = {
-			source = ./config/.tmux.conf;
-	};
+    ".ideavimrc" = {
+      source = ./config/.ideavimrc;
+    };
+    ".tmux.conf" = {
+      source = ./config/.tmux.conf;
+    };
   };
-
-
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -83,56 +87,61 @@
 
   programs.neovim = {
     enable = true;
-    viAlias  = true;          # symlink vi → nvim
-    vimAlias = true;          # symlink vim → nvim
+    viAlias = true; # symlink vi → nvim
+    vimAlias = true; # symlink vim → nvim
   };
 
-	programs.lazygit = {
-		enable = true;
-	};
-
-
-programs.zsh = {
-  enable = true;
-  autosuggestion.enable = true;
-  syntaxHighlighting.enable = true;
- oh-my-zsh = { # "ohMyZsh" without Home Manager
+  programs.lazygit = {
     enable = true;
-    plugins = [ "git" "kubectl" ];
-    theme = "robbyrussell";
   };
 
-  shellAliases = {
-    ll = "ls -l";
-    update = "home-manager switch";
-    lg= "lazygit";
-    
-  };
-  history.size = 10000;
-  initContent = ''
-export PATH="$PATH:/home/jack/.local/bin"
-path+=('/home/jack/path/')
-alias docker=podman
-## IMPORTANT
-if [ -f "$HOME/.env" ]; then
-    . "$HOME/.env"
-else
-    echo "could not find .env" >&2
-fi
-## IMPORTANT
-PATH=$PATH:$GOROOT/bin:$GOPATH/bin
- # Nix
- if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
- fi
- # End Nix
-		'';
-};
+  programs.zsh = {
+    enable = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    oh-my-zsh = {
+      # "ohMyZsh" without Home Manager
+      enable = true;
+      plugins = [
+        "git"
+        "kubectl"
+      ];
+      theme = "robbyrussell";
+    };
 
-xdg.configFile."nvim" = {
-  source = ./config/nvim;  # directory or file in your dotfiles repo
-  recursive = true;                      # copy whole directory tree
-};
+    shellAliases = {
+      ll = "ls -l";
+      update = "home-manager switch";
+      lg = "lazygit";
+      docker = "podman";
+      avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
+    };
+    history.size = 10000;
+
+    initContent = ''
+      export PATH="$PATH:/home/jack/.local/bin"
+      path+=('/home/jack/path/')
+      alias docker=podman
+      ## IMPORTANT
+      if [ -f "$HOME/.env" ]; then
+          . "$HOME/.env"
+      else
+          echo "could not find .env" >&2
+      fi
+      ## IMPORTANT
+      PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+       # Nix
+       if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+       fi
+       # End Nix
+      		'';
+  };
+
+  xdg.configFile."nvim" = {
+    source = ./config/nvim; # directory or file in your dotfiles repo
+    recursive = true; # copy whole directory tree
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
