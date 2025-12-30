@@ -54,7 +54,9 @@
 	".ideavimrc" = {
 			source = ./config/.ideavimrc;
 		};
-
+	".tmux.conf" = {
+			source = ./config/.tmux.conf;
+	};
   };
 
 
@@ -84,6 +86,10 @@
     viAlias  = true;          # symlink vi → nvim
     vimAlias = true;          # symlink vim → nvim
   };
+
+	programs.lazygit = {
+		enable = true;
+	};
 
 
 programs.zsh = {
