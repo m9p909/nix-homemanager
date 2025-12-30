@@ -24,6 +24,7 @@
     pkgs.nil
     pkgs.uv
     pkgs.nixfmt-rfc-style
+    pkgs.git-town
     (pkgs.python313.withPackages (
       ps: with ps; [
         requests
@@ -112,7 +113,6 @@
     shellAliases = {
       ll = "ls -l";
       update = "home-manager switch";
-      lg = "lazygit";
       docker = "podman";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
     };
