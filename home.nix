@@ -51,6 +51,9 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+	".ideavimrc" = {
+			source = ./config/.ideavimrc;
+		};
 
   };
 
@@ -124,7 +127,6 @@ xdg.configFile."nvim" = {
   source = ./config/nvim;  # directory or file in your dotfiles repo
   recursive = true;                      # copy whole directory tree
 };
-
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
