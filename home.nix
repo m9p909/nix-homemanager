@@ -115,6 +115,7 @@
       update = "home-manager switch";
       docker = "podman";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
+      git-sync = "git town sync";
     };
     history.size = 10000;
 
