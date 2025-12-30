@@ -1,4 +1,4 @@
-{ config, pkgs,inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -104,7 +104,9 @@ programs.zsh = {
 export PATH="$PATH:/home/jack/.local/bin"
 path+=('/home/jack/path/')
 alias docker=podman
+## IMPORTANT
 [ -f "$HOME/.env" ] && source "$HOME/.env"
+## IMPORTANT
 PATH=$PATH:$GOROOT/bin:$GOPATH/bin
  # Nix
  if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
@@ -118,19 +120,6 @@ xdg.configFile."nvim" = {
   source = ./nvim;  # directory or file in your dotfiles repo
   recursive = true;                      # copy whole directory tree
 };
-
-xdg.configFile.".env" = {
-  source = ./.env;   # absolute path outside store
-  target = ".env";
-};
-
-
-
-	#  home-manager.sharedModules = [
-	#    inputs.sops-nix.homeManagerModules.sops
-	#   ];
-
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
