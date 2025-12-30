@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -31,6 +35,27 @@
         rich
       ]
     ))
+
+    # Shell & CLI Enhancements
+    pkgs.ripgrep # Fast grep alternative
+    pkgs.fd # Fast find alternative
+    pkgs.bat # Better cat with syntax highlighting
+
+    # Development Tools
+    pkgs.jq # JSON processor for CLI
+    pkgs.yq-go # YAML processor
+    pkgs.httpie # User-friendly HTTP client
+    pkgs.gh # GitHub CLI
+
+    # Git Enhancements
+    pkgs.delta # Better git diff viewer
+    pkgs.git-absorb # Automatically fixup commits
+
+    # System Utilities
+    pkgs.btop # Better process viewer
+    pkgs.ncdu # Disk usage analyzer
+    pkgs.tree # Directory structure viewer
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -83,7 +108,7 @@
   #  /etc/profiles/per-user/jack/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    EDITOR = "neovim";
+    EDITOR = "nvim";
   };
 
   programs.neovim = {
@@ -93,6 +118,45 @@
   };
 
   programs.lazygit = {
+    enable = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    git = true;
+    icons = "auto";
+  };
+
+  programs.git = {
+    enable = true;
+    settings = {
+      init.defaultBranch = "main";
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
+  programs.tmux = {
     enable = true;
   };
 
@@ -122,7 +186,6 @@
     initContent = ''
       export PATH="$PATH:/home/jack/.local/bin"
       path+=('/home/jack/path/')
-      alias docker=podman
       ## IMPORTANT
       if [ -f "$HOME/.env" ]; then
           . "$HOME/.env"
