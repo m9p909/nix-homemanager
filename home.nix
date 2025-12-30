@@ -22,7 +22,7 @@
     # # "Hello, world!" when run.
 		#pkgs.hello
     pkgs.nil
-	
+    pkgs.uv
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -89,7 +89,7 @@ programs.zsh = {
   syntaxHighlighting.enable = true;
  oh-my-zsh = { # "ohMyZsh" without Home Manager
     enable = true;
-    plugins = [ "git" "thefuck" "kubectl" ];
+    plugins = [ "git" "kubectl" ];
     theme = "robbyrussell";
   };
 
@@ -100,12 +100,16 @@ programs.zsh = {
     
   };
   history.size = 10000;
-  initExtra = ''
+  initContent = ''
 export PATH="$PATH:/home/jack/.local/bin"
 path+=('/home/jack/path/')
 alias docker=podman
 ## IMPORTANT
-[ -f "$HOME/.env" ] && source "$HOME/.env"
+if [ -f "$HOME/.env" ]; then
+    . "$HOME/.env"
+else
+    echo "could not find .env" >&2
+fi
 ## IMPORTANT
 PATH=$PATH:$GOROOT/bin:$GOPATH/bin
  # Nix
@@ -117,9 +121,11 @@ PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 };
 
 xdg.configFile."nvim" = {
-  source = ./nvim;  # directory or file in your dotfiles repo
+  source = ./config/nvim;  # directory or file in your dotfiles repo
   recursive = true;                      # copy whole directory tree
 };
+
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
