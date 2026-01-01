@@ -34,7 +34,6 @@
     (pkgs.python313.withPackages (
       ps: with ps; [
         requests
-        rich
       ]
     ))
 
@@ -150,9 +149,9 @@
 
   programs.git = {
     enable = true;
-    userName = "m9p909";
-    userEmail = "jackfulcher09@gmail.com";
-    extraConfig = {
+    settings = {
+      user.name = "m9p909";
+      user.email = "jackfulcher09@gmail.com";
       init.defaultBranch = "main";
     };
   };
