@@ -40,6 +40,11 @@ return {
   keys = {
     { '<leader>ae', '<cmd>AvanteClear<cr>', desc = 'Avante: Clear Chat', silent = true },
   },
+
+  rules = {
+    project_dir = '.avante/rules', -- relative to project root, can also be an absolute path
+    global_dir = '~/.config/avante/rules', -- absolute path
+  },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = 'make',
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows

@@ -207,6 +207,9 @@
     recursive = true; # copy whole directory tree
   };
 
+  xdg.configFile."avante/rules/CLAUDE.md" = {
+    source = ./config/CLAUDE.md;
+  };
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
