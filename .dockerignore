@@ -1,0 +1,6 @@
+.git
+*.md
+secrets.yaml
+.env
+Dockerfile
+.dockerignore

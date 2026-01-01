@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: home-manager-dev
+  namespace: dev-environment
+spec:
+  serviceName: home-manager-dev
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-manager-dev
+  template:
+    metadata:
+      labels:
+        app: home-manager-dev
+    spec:
+      containers:
+      - name: dev-env
+        image: ghcr.io/<username>/home-manager-dev:latest  # Update with your GitHub username
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 22
+          name: ssh
+        volumeMounts:
+        - name: home-data
+          mountPath: /home/jack
+        - name: env-config
+          mountPath: /home/jack/.env
+          subPath: .env
+          readOnly: true
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        livenessProbe:
+          tcpSocket:
+            port: 22
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 22
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: env-config
+        secret:
+          secretName: dev-env-secret
+  volumeClaimTemplates:
+  - metadata:
+      name: home-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi

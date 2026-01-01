@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-manager-dev
+  namespace: dev-environment
+spec:
+  selector:
+    app: home-manager-dev
+  ports:
+  - name: ssh
+    port: 22
+    targetPort: 22
+    protocol: TCP
+  clusterIP: None  # Headless service for StatefulSet

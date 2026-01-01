@@ -1,0 +1,20 @@
+services:
+  dev:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+    image: home-manager-dev:latest
+    ports:
+      - "2222:22"
+    volumes:
+      - ./.env:/home/jack/.env:ro
+      - home_manager_state:/home/jack/.local/state/home-manager
+    environment:
+      - TERM=xterm-256color
+    stdin_open: false
+    tty: false
+
+volumes:
+  home_manager_state:

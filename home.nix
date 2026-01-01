@@ -5,6 +5,8 @@
 }:
 
 {
+  nixpkgs.config.allowUnfree = true;
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "jack";
@@ -46,6 +48,8 @@
     pkgs.yq-go # YAML processor
     pkgs.httpie # User-friendly HTTP client
     pkgs.gh # GitHub CLI
+    pkgs.gcc # C compiler (for Avante plugin builds)
+    pkgs.gnumake # Build tool (for Avante plugin builds)
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -202,14 +206,15 @@
       		'';
   };
 
+  programs.claude-code = {
+    enable = true;
+  };
+
   xdg.configFile."nvim" = {
     source = ./config/nvim; # directory or file in your dotfiles repo
     recursive = true; # copy whole directory tree
   };
 
-  xdg.configFile."avante/rules/CLAUDE.md" = {
-    source = ./config/CLAUDE.md;
-  };
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
