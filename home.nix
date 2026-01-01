@@ -150,7 +150,9 @@
 
   programs.git = {
     enable = true;
-    settings = {
+    userName = "m9p909";
+    userEmail = "jackfulcher09@gmail.com";
+    extraConfig = {
       init.defaultBranch = "main";
     };
   };

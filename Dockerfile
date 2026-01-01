@@ -43,38 +43,13 @@ RUN mkdir -p /home/${USER}/.config/nix && \
 # Copy home-manager configuration
 COPY --chown=${USER}:${USER} . /home/${USER}/.config/home-manager/
 
-# Create initialization script
-# Note: home-manager must initialize at runtime due to container filesystem path length limits
+# Initialize home-manager during build (takes 5-10 minutes)
+RUN . /home/${USER}/.nix-profile/etc/profile.d/nix.sh && \
+    /home/${USER}/.nix-profile/bin/nix run home-manager/master -- switch --flake /home/${USER}/.config/home-manager#jack
+
+# Copy entrypoint script
 USER root
-RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-# Initialize home-manager on first run\n\
-if [ ! -f /home/jack/.local/state/.hm-initialized ]; then\n\
-  echo "Initializing home-manager (this will take 5-10 minutes on first run)..."\n\
-  mkdir -p /home/jack/.local/state\n\
-  chown jack:jack /home/jack/.local/state\n\
-  \n\
-  # Run as jack user with proper Nix environment\n\
-  su jack -s /bin/bash -c '\''set -e\n\
-    export HOME=/home/jack\n\
-    export USER=jack\n\
-    export NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt\n\
-    cd /home/jack\n\
-    if [ -e /home/jack/.nix-profile/etc/profile.d/nix.sh ]; then\n\
-      . /home/jack/.nix-profile/etc/profile.d/nix.sh\n\
-    fi\n\
-    /home/jack/.nix-profile/bin/nix run home-manager/master -- switch --flake /home/jack/.config/home-manager#jack'\''\n\
-  \n\
-  su jack -c "git config --global user.name '\''Jack'\'' && git config --global user.email '\''jack@localhost'\''"\n\
-  touch /home/jack/.local/state/.hm-initialized\n\
-  echo "Home-manager initialized successfully!"\n\
-fi\n\
-\n\
-# Start SSH server in foreground (keeps container alive)\n\
-echo "Starting SSH server on port 22..."\n\
-exec /usr/sbin/sshd -D -e' > /entrypoint.sh && \
-    chmod +x /entrypoint.sh
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
 # Set working directory
 WORKDIR /home/${USER}
