@@ -60,10 +60,6 @@
     pkgs.ncdu # Disk usage analyzer
     pkgs.tree # Directory structure viewer
 
-    # Container Tools
-    pkgs.docker # Container runtime
-    pkgs.docker-compose # Docker Compose
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
