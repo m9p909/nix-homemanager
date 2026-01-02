@@ -50,8 +50,6 @@ RUN nix-channel --add https://github.com/nix-community/home-manager/archive/rele
 
 # Set default shell to zsh (switch to root to modify /etc/shells)
 USER root
-RUN echo /home/${USER}/.nix-profile/bin/zsh >> /etc/shells && \
-    chsh -s /home/${USER}/.nix-profile/bin/zsh ${USER}
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
 # Entry point: initialization script
