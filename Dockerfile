@@ -20,7 +20,10 @@ RUN apt-get update && apt-get install -y \
 RUN groupadd -g ${GID} ${USER} && \
     useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USER} && \
     echo "${USER}:dev" | chpasswd && \
-    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    mkdir -p /home/${USER}/.ssh && \
+    chown ${USER}:${USER} /home/${USER}/.ssh && \
+    chmod 700 /home/${USER}/.ssh
 
 # Switch to user for Nix installation
 USER ${USER}
@@ -31,6 +34,7 @@ RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
 
 # Set up Nix environment
 ENV PATH="/home/${USER}/.nix-profile/bin:${PATH}"
+ENV NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Enable experimental features (flakes and nix-command)
 RUN mkdir -p /home/${USER}/.config/nix && \
@@ -46,6 +50,9 @@ RUN . /home/${USER}/.nix-profile/etc/profile.d/nix.sh && \
 # Copy entrypoint script
 USER root
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
+
+# Set working directory
+WORKDIR /home/${USER}
 
 # Entry point: initialization script
 ENTRYPOINT ["/entrypoint.sh"]
