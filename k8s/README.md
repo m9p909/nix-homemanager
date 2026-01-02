@@ -24,15 +24,56 @@ echo $GITHUB_TOKEN | docker login ghcr.io -u <your-github-username> --password-s
 docker push ghcr.io/<your-github-username>/home-manager-dev:v1.0
 ```
 
-### 2. Update StatefulSet Image
+### 2. Create Image Pull Secret for GitHub Container Registry
 
-Edit `statefulset.yaml` and replace `<username>` with your GitHub username:
+Kubernetes needs authentication to pull your private image from ghcr.io.
+
+**Step A: Create GitHub Personal Access Token (PAT)**
+
+1. Go to https://github.com/settings/tokens/new
+2. Under "Scopes", select `read:packages`
+3. Generate the token and save it
+
+**Step B: Create Kubernetes Secret**
+
+```bash
+# Create the image pull secret in the dev-environment namespace
+kubectl create secret docker-registry registry-key \
+  --docker-server=ghcr.io \
+  --docker-username=<your-github-username> \
+  --docker-password=<your-github-pat> \
+  --docker-email=your-email@example.com \
+  -n dev-environment
+```
+
+Replace:
+- `<your-github-username>`: Your GitHub username (e.g., `m9p909`)
+- `<your-github-pat>`: The Personal Access Token you created above
+- `your-email@example.com`: Your email
+
+**Step C: StatefulSet Already Configured**
+
+The `statefulset.yaml` already includes the `imagePullSecrets` reference (in the pod template):
+
+```yaml
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+      - name: registry-key
+      containers:
+      # ... rest of spec
+```
+
+### 3. Update StatefulSet Image
+
+Edit `statefulset.yaml` and ensure the image uses your GitHub username:
 
 ```yaml
 image: ghcr.io/<your-github-username>/home-manager-dev:v1.0
 ```
 
-### 3. Create Environment Secret
+### 4. Create Environment Secret
 
 **Option A: From file**
 ```bash
@@ -48,7 +89,7 @@ Edit `secret.yaml` and add your environment variables, then:
 kubectl apply -f secret.yaml
 ```
 
-### 4. Deploy to Kubernetes
+### 5. Deploy to Kubernetes
 
 Apply the manifests in order:
 
@@ -72,7 +113,7 @@ kubectl apply -f tailscale-service.yaml
 kubectl apply -f .
 ```
 
-### 5. Monitor Deployment
+### 6. Monitor Deployment
 
 ```bash
 # Watch pod status
@@ -85,7 +126,7 @@ kubectl logs -n dev-environment home-manager-dev-0 -f
 kubectl get svc -n dev-environment
 ```
 
-### 6. Get Tailscale Hostname
+### 7. Get Tailscale Hostname
 
 ```bash
 # Check the LoadBalancer service for Tailscale hostname
@@ -95,7 +136,7 @@ kubectl get svc home-manager-dev-tailscale -n dev-environment
 # It should appear as: home-manager-dev
 ```
 
-### 7. SSH Access
+### 8. SSH Access
 
 Once the pod is ready and Tailscale has provisioned:
 
