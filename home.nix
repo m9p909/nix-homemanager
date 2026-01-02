@@ -49,6 +49,7 @@
     pkgs.gh # GitHub CLI
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
+    pkgs.go_1_25
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -174,6 +175,7 @@
       enable = true;
       plugins = [
         "git"
+        "terraform"
         "kubectl"
       ];
       theme = "robbyrussell";
@@ -184,6 +186,7 @@
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
       git-sync = "git town sync";
+      claude-danger = "claude --dangerously-skip-permissions";
     };
     history.size = 10000;
 
