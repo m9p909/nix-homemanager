@@ -25,16 +25,17 @@ RUN groupadd -g ${GID} ${USER} && \
     chown ${USER}:${USER} /home/${USER}/.ssh && \
     chmod 700 /home/${USER}/.ssh
 
-# Switch to user for Nix installation
-USER ${USER}
-WORKDIR /home/${USER}
-
-# Install Nix as user (single-user mode - no daemon needed)
-RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+# Install Nix as multi-user (daemon mode - system-wide)
+RUN curl -L https://nixos.org/nix/install | sh -s -- --daemon && \
+    usermod -aG nixbld ${USER}
 
 # Set up Nix environment
-ENV PATH="/home/${USER}/.nix-profile/bin:${PATH}"
+ENV PATH="/nix/var/nix/profiles/default/bin:${PATH}"
 ENV NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
+# Switch to user for home-manager setup
+USER ${USER}
+WORKDIR /home/${USER}
 
 # Enable experimental features (flakes and nix-command)
 RUN mkdir -p /home/${USER}/.config/nix && \
@@ -44,8 +45,7 @@ RUN mkdir -p /home/${USER}/.config/nix && \
 COPY --chown=${USER}:${USER} . /home/${USER}/.config/home-manager/
 
 # Initialize home-manager during build (takes 5-10 minutes)
-RUN . /home/${USER}/.nix-profile/etc/profile.d/nix.sh && \
-    /home/${USER}/.nix-profile/bin/nix run home-manager/master -- switch --flake /home/${USER}/.config/home-manager#jack
+RUN nix run home-manager/master -- switch --flake /home/${USER}/.config/home-manager#jack
 
 # Copy entrypoint script
 USER root

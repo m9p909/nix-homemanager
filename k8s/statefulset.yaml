@@ -25,7 +25,11 @@ spec:
           name: ssh
         volumeMounts:
         - name: home-data
-          mountPath: /home/jack
+          mountPath: /home/jack/.local/state
+          subPath: local-state
+        - name: home-data
+          mountPath: /home/jack/work
+          subPath: work
         - name: env-config
           mountPath: /home/jack/.env
           subPath: .env
