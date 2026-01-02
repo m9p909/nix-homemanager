@@ -25,17 +25,16 @@ RUN groupadd -g ${GID} ${USER} && \
     chown ${USER}:${USER} /home/${USER}/.ssh && \
     chmod 700 /home/${USER}/.ssh
 
-# Install Nix as multi-user (daemon mode - system-wide)
-RUN curl -L https://nixos.org/nix/install | sh -s -- --daemon && \
-    usermod -aG nixbld ${USER}
-
-# Set up Nix environment
-ENV PATH="/nix/var/nix/profiles/default/bin:${PATH}"
-ENV NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
-
-# Switch to user for home-manager setup
+# Switch to user for Nix installation
 USER ${USER}
 WORKDIR /home/${USER}
+
+# Install Nix as single-user
+RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+
+# Set up Nix environment
+ENV PATH="/home/${USER}/.nix-profile/bin:${PATH}"
+ENV NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Enable experimental features (flakes and nix-command)
 RUN mkdir -p /home/${USER}/.config/nix && \
@@ -44,15 +43,16 @@ RUN mkdir -p /home/${USER}/.config/nix && \
 # Copy home-manager configuration
 COPY --chown=${USER}:${USER} . /home/${USER}/.config/home-manager/
 
-# Initialize home-manager during build (takes 5-10 minutes)
-RUN nix run home-manager/master -- switch --flake /home/${USER}/.config/home-manager#jack
+# Set up home-manager channel (25.11)
+RUN nix-channel --add https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz home-manager && \
+    nix-channel --update && \
+    nix-shell '<home-manager>' -A install
 
-# Copy entrypoint script
+# Set default shell to zsh (switch to root to modify /etc/shells)
 USER root
+RUN echo /home/${USER}/.nix-profile/bin/zsh >> /etc/shells && \
+    chsh -s /home/${USER}/.nix-profile/bin/zsh ${USER}
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
-
-# Set working directory
-WORKDIR /home/${USER}
 
 # Entry point: initialization script
 ENTRYPOINT ["/entrypoint.sh"]
