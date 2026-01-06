@@ -57,8 +57,29 @@
 
     # System Utilities
     pkgs.btop # Better process viewer
+    pkgs.htop # Process viewer
     pkgs.ncdu # Disk usage analyzer
     pkgs.tree # Directory structure viewer
+    pkgs.cloc # Count lines of code
+    pkgs.tldr # Simplified man pages
+    pkgs.watch # Execute command periodically
+    pkgs.parallel # Run commands in parallel
+
+    # Cloud & Infrastructure
+    pkgs.kubectl # Kubernetes command-line tool
+    pkgs.kubernetes-helm # Kubernetes package manager
+    pkgs.k9s # Terminal UI for Kubernetes
+    pkgs.terraform # Infrastructure as code
+    pkgs.vault # Secrets management
+
+    # Build Tools
+    pkgs.maven # Java build tool
+    pkgs.gradle # Build automation tool
+
+    # Clojure Ecosystem
+    pkgs.clojure # Clojure language
+    pkgs.babashka # Native Clojure scripting
+    pkgs.leiningen # Clojure build tool
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -92,6 +113,14 @@
     };
     ".tmux.conf" = {
       source = ./config/.tmux.conf;
+    };
+    ".claude/commands" = {
+      source = ./config/claude/commands;
+      recursive = true;
+    };
+    ".claude/skills" = {
+      source = ./config/claude/skills;
+      recursive = true;
     };
   };
 
@@ -185,8 +214,10 @@
       ll = "ls -l";
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
-      git-sync = "git town sync";
+      git-sync = "git fetch --tags --force && git town sync";
       claude-danger = "claude --dangerously-skip-permissions";
+      search-code = "rg";
+      find-files = "fd";
     };
     history.size = 10000;
 
@@ -214,8 +245,18 @@
   };
 
   xdg.configFile."nvim" = {
-    source = ./config/nvim; # directory or file in your dotfiles repo
-    recursive = true; # copy whole directory tree
+    source = ./config/nvim;
+    recursive = true;
+  };
+
+  xdg.configFile."ghostty" = {
+    source = ./config/ghostty;
+    recursive = true;
+  };
+
+  xdg.configFile."lazygit" = {
+    source = ./config/lazygit;
+    recursive = true;
   };
 
   # Let Home Manager install and manage itself.
