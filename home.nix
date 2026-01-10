@@ -50,6 +50,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
+    pkgs.nodejs_22 # Node.js runtime
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -57,8 +58,27 @@
 
     # System Utilities
     pkgs.btop # Better process viewer
+    pkgs.htop # Process viewer
     pkgs.ncdu # Disk usage analyzer
     pkgs.tree # Directory structure viewer
+    pkgs.cloc # Count lines of code
+    pkgs.tldr # Simplified man pages
+    pkgs.watch # Execute command periodically
+    pkgs.parallel # Run commands in parallel
+
+    # Cloud & Infrastructure
+    pkgs.kubectl # Kubernetes command-line tool
+    pkgs.kubernetes-helm # Kubernetes package manager
+    pkgs.k9s # Terminal UI for Kubernetes
+
+    # Build Tools
+    pkgs.maven # Java build tool
+    pkgs.gradle # Build automation tool
+
+    # Clojure Ecosystem
+    pkgs.clojure # Clojure language
+    pkgs.babashka # Native Clojure scripting
+    pkgs.leiningen # Clojure build tool
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -92,6 +112,14 @@
     };
     ".tmux.conf" = {
       source = ./config/.tmux.conf;
+    };
+    ".claude/commands" = {
+      source = ./config/claude/commands;
+      recursive = true;
+    };
+    ".claude/skills" = {
+      source = ./config/claude/skills;
+      recursive = true;
     };
   };
 
@@ -185,14 +213,16 @@
       ll = "ls -l";
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
-      git-sync = "git town sync";
+      git-sync = "git fetch --tags --force && git town sync";
       claude-danger = "claude --dangerously-skip-permissions";
+      search-code = "rg";
+      find-files = "fd";
     };
     history.size = 10000;
 
     initContent = ''
-      export PATH="$PATH:/home/jack/.local/bin"
-      path+=('/home/jack/path/')
+      export PATH="$PATH:$HOME/.local/bin"
+      path+=("$HOME/path/")
       ## IMPORTANT
       if [ -f "$HOME/.env" ]; then
           . "$HOME/.env"
@@ -214,8 +244,13 @@
   };
 
   xdg.configFile."nvim" = {
-    source = ./config/nvim; # directory or file in your dotfiles repo
-    recursive = true; # copy whole directory tree
+    source = ./config/nvim;
+    recursive = true;
+  };
+
+  xdg.configFile."ghostty" = {
+    source = ./config/ghostty;
+    recursive = true;
   };
 
   # Let Home Manager install and manage itself.
