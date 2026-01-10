@@ -70,8 +70,6 @@
     pkgs.kubectl # Kubernetes command-line tool
     pkgs.kubernetes-helm # Kubernetes package manager
     pkgs.k9s # Terminal UI for Kubernetes
-    pkgs.terraform # Infrastructure as code
-    pkgs.vault # Secrets management
 
     # Build Tools
     pkgs.maven # Java build tool
@@ -254,11 +252,6 @@
 
   xdg.configFile."ghostty" = {
     source = ./config/ghostty;
-    recursive = true;
-  };
-
-  xdg.configFile."lazygit" = {
-    source = ./config/lazygit;
     recursive = true;
   };
 
