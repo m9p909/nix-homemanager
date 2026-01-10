@@ -9,8 +9,8 @@
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "jack";
-  home.homeDirectory = "/home/jack";
+  home.username = "jackclarke";
+  home.homeDirectory = "/Users/jackclarke";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -50,6 +50,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
+    pkgs.nodejs_22 # Node.js runtime
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -218,12 +219,14 @@
       claude-danger = "claude --dangerously-skip-permissions";
       search-code = "rg";
       find-files = "fd";
+      sam-enterprise = "sam run examples/webui_auth.yaml examples/sam_basic.yaml examples/logging_config.yaml examples/platform_service.yaml";
+      kill-sam = ''lsof -ti:8000,8001 | xargs kill -9 2>/dev/null && echo "Killed processes on ports 8000 and 8001" || echo "No processes found on ports 8000 and 8001"'';
     };
     history.size = 10000;
 
     initContent = ''
-      export PATH="$PATH:/home/jack/.local/bin"
-      path+=('/home/jack/path/')
+      export PATH="$PATH:$HOME/.local/bin"
+      path+=("$HOME/path/")
       ## IMPORTANT
       if [ -f "$HOME/.env" ]; then
           . "$HOME/.env"

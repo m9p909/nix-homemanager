@@ -20,7 +20,7 @@ return {
       },
     },
     cursor_applying_provider = 'openrouter',
-    provider = 'openrouter',
+    provider = 'copilot',
     behaviour = {
       --- ... existing behaviours
       enable_cursor_planning_mode = false, -- enable cursor planning mode!

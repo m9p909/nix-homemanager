@@ -10,17 +10,16 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }: # expose sops-nix
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
+    { nixpkgs, home-manager, ... }:
     {
+      homeConfigurations."jackclarke" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [ ./home.nix ];
+      };
+
       homeConfigurations."jack" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home.nix
-        ];
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ];
       };
     };
 }
