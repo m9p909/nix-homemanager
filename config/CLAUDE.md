@@ -16,6 +16,7 @@
 - When planning be concise. Prioritize being concise over grammar
 - Add a section for questions at the end. List any unresolved questions for the coworker
 - Break the plan into steps
+- Use specific line numbers and files for code references
 
 ## Execution
 - you can't test things yourself. Ask the user to test things
@@ -24,6 +25,7 @@
 - prefer a test to code ratio of around 2 test lines of code to 1 production code
 - when executing steps, add unit tests with each step. Run unit tests before continuing
 - When types are optional, prefer to add types
+- When describing your actions use specific line numbers
 
 ## Logging
 - There should be at least a debug log for every branch in the code.
@@ -32,4 +34,7 @@
 - Warning logs are for possible failures, but unsure
 - Info logs are the default, and should be used by anything else
 - Raw string data should not be logged most of the time. Enums can be logged, ints can be logged
+
+## Questions
+- Use specific line numbers and files for answering questions
 
