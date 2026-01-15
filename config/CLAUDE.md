@@ -26,6 +26,7 @@
 - when executing steps, add unit tests with each step. Run unit tests before continuing
 - When types are optional, prefer to add types
 - When describing your actions use specific line numbers
+- Prefer to add new code as new functions instead of modifying code, to clearly identify the change to the reader. 
 
 ## Logging
 - There should be at least a debug log for every branch in the code.
