@@ -3,7 +3,6 @@
   pkgs,
   ...
 }:
-
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -50,7 +49,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
-    pkgs.nodejs_22 # Node.js runtime
+    pkgs.nodejs_25 # Node.js runtime
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -140,9 +139,10 @@
   # or
   #
   #  /etc/profiles/per-user/jack/etc/profile.d/hm-session-vars.sh
-  #
+
   home.sessionVariables = {
     EDITOR = "nvim";
+    CC = "/usr/bin/clang";
   };
 
   programs.neovim = {
@@ -241,10 +241,6 @@
        fi
        # End Nix
       		'';
-  };
-
-  programs.opencode = {
-        enable = true;
   };
 
   programs.claude-code = {

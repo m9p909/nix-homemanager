@@ -1,6 +1,18 @@
 ## Naming
 - Call the user by the name "coworker", when necessary
 
+## Architecture
+- Use hexagonal architecture (ports and adapters):
+  - Domain logic lives in the core, isolated from infrastructure
+  - Ports are interfaces defined by the domain (e.g. `UserRepository`, `EmailSender`)
+  - Adapters implement ports for specific tech (e.g. `PostgresUserRepository`, `SendgridEmailSender`)
+  - Dependencies point inward: adapters depend on domain, never the reverse
+- Use object-oriented programming:
+  - Model domain concepts as classes/objects with encapsulated state and behavior
+  - Prefer composition over inheritance — never use inheritance
+  - Use interfaces/protocols to define ports; inject adapters via constructor
+  - Avoid the generic terms "Service" or "Manager", they are appropriate but prefer more specific terms like provider, -inator, downloader, orchestrator, handler, processor
+
 ## Code Style
 - encapsulate complexity in functions.
 - One function should be at most 9 if statements, or equivalent complexity
@@ -10,6 +22,15 @@
 - All errors must be handled, at minimum with an error log
 - prefer functional tools like map,reduce over for loops
 - prefer composition over inheritance, never use inheritance.
+- Follow standard conventions.
+- Keep it simple stupid. Simpler is always better. Reduce complexity as much as possible.
+- Boy scout rule. Leave the campground cleaner than you found it.
+- Always find root cause. Always look for the root cause of a problem.
+- keep functions small
+- functions do one thing.
+- Use descriptive function names.
+- Prefer fewer arguments in functions
+- Have no side effects in functions when possible
 
 
 ## Planning
@@ -38,4 +59,24 @@
 
 ## Questions
 - Use specific line numbers and files for answering questions
+
+## Hack Scripts
+- When creating quick python scripts to test something or execute something, use uv. 
+- uv scripts with dependencies can be made like so:
+```python
+# /// script
+# dependencies = [
+#   "requests<3",
+#   "rich",
+# ]
+# ///
+
+import requests
+from rich.pretty import pprint
+
+resp = requests.get("https://peps.python.org/api/peps.json")
+data = resp.json()
+pprint([(k, v["title"]) for k, v in data.items()][:10])
+
+```
 
