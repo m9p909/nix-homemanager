@@ -216,7 +216,8 @@
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
       git-sync = "git fetch --tags --force && git town sync";
-      claude-danger = "claude --dangerously-skip-permissions";
+      claude = "claude --verbose";
+      claude-danger = "claude --dangerously-skip-permissions --verbose";
       search-code = "rg";
       find-files = "fd";
       sam-enterprise = "sam run examples/webui_auth.yaml examples/sam_basic.yaml examples/logging_config.yaml examples/platform_service.yaml";
