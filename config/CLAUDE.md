@@ -18,6 +18,7 @@
 - One function should be at most 9 if statements, or equivalent complexity
 - prefer minimialism. Smallest amount of code to get the job done
 - One class/struct/file should be at most 5 functions, or equivalent complexity
+- Keep files under 500 lines. If a file exceeds 500 lines, suggest refactoring by splitting into smaller modules
 - prefer strict types and validations
 - All errors must be handled, at minimum with an error log
 - prefer functional tools like map,reduce over for loops

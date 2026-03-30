@@ -24,15 +24,16 @@ If any of these are missing, ask the human to update the plan before proceeding.
 
 Repeat the following until the human approves:
 
-1. **Code**: Implement one step from the plan at a time.
+1. **Implement**: Use the Agent tool to spawn an implementer agent with the full plan and the following prompt:
+   > You are a senior engineer implementing an approved plan step by step. For each step:
+   > 1. Implement the code for that step.
+   > 2. Write unit tests (target 2:1 test-to-code ratio). Run them and save output to `/tmp/implement-plan-test-output.txt`. If tests fail, fix them before moving to the next step.
+   > 3. Repeat for all remaining steps.
+   > 4. Once all steps are complete, write and run integration tests covering the full flow. Save output to `/tmp/implement-plan-test-output.txt`. If integration tests fail, fix them before finishing.
+   >
+   > Reference specific file paths and line numbers. Do not skip steps or tests. Stop and report if you are blocked.
 
-2. **Unit Test**: Write unit tests for that step (target 2:1 test-to-code ratio). Run unit tests and save output to `/tmp/implement-plan-test-output.txt`. **If tests fail, fix them before moving to the next step.**
-
-3. Repeat steps 1–2 for each remaining step in the plan.
-
-4. **Integration Test**: Once all steps are complete, write and run integration tests covering the full flow. Save output to `/tmp/implement-plan-test-output.txt`. **If integration tests fail, fix them before proceeding to review.**
-
-5. **Review**: Use the Agent tool to spawn a reviewer agent with the following prompt:
+2. **Review**: Use the Agent tool to spawn a reviewer agent with the following prompt:
    > You are a principal engineer doing a thorough code review. Review all changes made so far against the approved plan. Reference specific file paths and line numbers throughout. End with a clear verdict: APPROVED or CHANGES REQUESTED.
    >
    > **Bug Detection**
@@ -48,7 +49,7 @@ Repeat the following until the human approves:
    > - Auth/authorization gaps
    >
    > **Code Quality** (enforce CLAUDE.md standards)
-   > - Functions ≤ 9 branches; files ≤ 5 functions
+   > - Functions ≤ 9 branches; files ≤ 5 functions; files ≤ 500 lines
    > - No inheritance; prefer composition
    > - Functional style (map/reduce) over loops where reasonable
    > - Strict types used; no implicit `any` or untyped params
@@ -72,6 +73,6 @@ Repeat the following until the human approves:
    >
    > Use model: opus
 
-6. Present the reviewer's verdict and a summary of test results to the human. Ask for approval using `AskUserQuestion`.
+3. Present the reviewer's verdict and a summary of test results to the human. Ask for approval using `AskUserQuestion`.
 
-7. If the human requests changes, incorporate their feedback and the reviewer's notes, then repeat from step 1.
+4. If the human requests changes, incorporate their feedback and the reviewer's notes, then repeat from step 1.
