@@ -36,8 +36,20 @@
 ## Planning
 - When planning be concise. Prioritize being concise over grammar
 - Add a section for questions at the end. List any unresolved questions for the coworker
-- Break the plan into steps
 - Use specific line numbers and files for code references
+- Provide a list of unit and integration test cases in the plan
+
+### Empathize
+- Identify the user need and the problem being solved
+
+### Ideate
+- Propose 3 different solution approaches before picking one
+- Briefly note trade-offs for each
+
+### Design
+- Break the chosen solution into steps
+- Clarify edge cases
+- Clarify contracts (inputs, outputs, error states) for each component
 
 ## Execution
 - you can't test things yourself. Ask the user to test things
@@ -79,4 +91,8 @@ data = resp.json()
 pprint([(k, v["title"]) for k, v in data.items()][:10])
 
 ```
+
+## HomeManager
+This pc uses home-manager to manage configuration for claude and others, whenever a config changes prefer to change it in home-manager
+This pc is also a mac
 
