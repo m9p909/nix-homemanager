@@ -25,6 +25,11 @@ return {
       --- ... existing behaviours
       enable_cursor_planning_mode = false, -- enable cursor planning mode!
     },
+    mappings = {
+      files = {
+        add_current = '<leader>aA', -- was <leader>ac, moved to avoid conflict with ClaudeCode
+      },
+    },
     --    system_prompt = function()
     --      local hub = require('mcphub').get_hub_instance()
     --      return hub and hub:get_active_servers_prompt() or ''
