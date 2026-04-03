@@ -50,7 +50,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
-    pkgs.nodejs_22 # Node.js runtime
+    pkgs.nodejs_25 # Node.js runtime
     pkgs.deno # Deno runtime
 
     # Git Enhancements
@@ -216,7 +216,8 @@
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
       git-sync = "git fetch --tags --force && git town sync";
-      claude-danger = "claude --dangerously-skip-permissions";
+      claude = "claude --verbose";
+      claude-danger = "claude --dangerously-skip-permissions --verbose";
       search-code = "rg";
       find-files = "fd";
     };
