@@ -122,6 +122,9 @@
       source = ./config/claude/skills;
       recursive = true;
     };
+    ".claude/CLAUDE.md" = {
+      source = ./config/CLAUDE.md;
+    };
   };
 
   # Home Manager can also manage your environment variables through

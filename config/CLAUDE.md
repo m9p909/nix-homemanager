@@ -39,6 +39,7 @@
 - Add a section for questions at the end. List any unresolved questions for the coworker
 - Use specific line numbers and files for code references
 - Provide a list of unit and integration test cases in the plan
+- Start every plan with a **Problem Summary** section that describes the problem in detail: what is broken or missing, who is affected, what the expected vs actual behavior is, and why it matters
 
 ### Empathize
 - Identify the user need and the problem being solved
