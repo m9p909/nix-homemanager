@@ -15,9 +15,8 @@ Code review the given pull request: "$ARGUMENTS"
 2. If a PR number is provided, use `gh pr view <number>` to get PR details
 3. Use `gh pr diff <number>` to get the diff
 4. Read any CLAUDE.md files in the repo root and in directories touched by the PR
-5. Determine which review dimensions apply 
-6. Spawn Opus subagents and provide instructions like `SUBAGENT_INSTRUCTIONS.md`
-6. While the subagents are running, Analyze the changes and provide a thorough code review
+5. Determine which review dimensions apply (see below) and Read the relevant files
+6. Analyze the changes and provide a thorough code review
 
 ## Guidelines
 
