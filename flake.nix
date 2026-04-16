@@ -27,5 +27,10 @@
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
         modules = [ ./home.nix ];
       };
+
+      homeConfigurations."jack.clarke" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [ ./home.nix ];
+      };
     };
 }
