@@ -8,7 +8,7 @@
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "jack.clarke";
+  home.username = "jackclarke";
   home.homeDirectory = "/Users/jackclarke";
 
   # This value determines the Home Manager release that your configuration is

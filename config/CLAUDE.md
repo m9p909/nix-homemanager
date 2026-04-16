@@ -64,7 +64,6 @@
 - Prefer to add new code as new functions instead of modifying code, to clearly identify the change to the reader. 
 
 ## Logging
-- There should be at least a debug log for every branch in the code.
 - Debug logs should be for information that is often unneccessary to understand how the system is working
 - error logs should only be used for cases where an unacceptable branch is taken, that will cause the function to fail
 - Warning logs are for possible failures, but unsure
