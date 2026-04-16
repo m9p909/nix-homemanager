@@ -1,10 +1,7 @@
 ---
-name: review-pr
+allowed-tools: Bash(gh:*), Bash(git:*), Glob, Grep, Read
 description: Code review a pull request
 argument-hint: "[PR number or URL]"
-allowed-tools: ["Bash", "Glob", "Grep", "Read"]
-model: inherit
-color: green
 ---
 
 Code review the given pull request: "$ARGUMENTS"
@@ -38,15 +35,15 @@ After analyzing the diff, Read ONLY the dimension files relevant to this PR's ch
 
 | Dimension | File | Load when PR... |
 |-----------|------|-----------------|
-| Naming & structure | `dimensions/naming-structure.md` | Always — applies to all code changes |
-| Test coverage | `dimensions/test-coverage.md` | Adds or modifies test files |
-| Security | `dimensions/security.md` | Touches auth, user input, secrets, or system boundaries |
-| Logging | `dimensions/logging.md` | Adds or modifies log statements |
-| User-facing text | `dimensions/user-facing-text.md` | Includes user-facing strings in the API, error messages, or UI text |
-| API contract | `dimensions/api-contract.md` | Adds or modifies API endpoints, routes, or controllers |
-| Concurrency | `dimensions/concurrency.md` | Touches DB access, queues, locks, thread pools, or external service calls |
+| Naming & structure | `~/.claude/skills/mc-review-pr/dimensions/naming-structure.md` | Always — applies to all code changes |
+| Test coverage | `~/.claude/skills/mc-review-pr/dimensions/test-coverage.md` | Adds or modifies test files |
+| Security | `~/.claude/skills/mc-review-pr/dimensions/security.md` | Touches auth, user input, secrets, or system boundaries |
+| Logging | `~/.claude/skills/mc-review-pr/dimensions/logging.md` | Adds or modifies log statements |
+| User-facing text | `~/.claude/skills/mc-review-pr/dimensions/user-facing-text.md` | Includes user-facing strings in the API, error messages, or UI text |
+| API contract | `~/.claude/skills/mc-review-pr/dimensions/api-contract.md` | Adds or modifies API endpoints, routes, or controllers |
+| Concurrency | `~/.claude/skills/mc-review-pr/dimensions/concurrency.md` | Touches DB access, queues, locks, thread pools, or external service calls |
 
-Use Read to load each relevant dimension file from the `dimensions/` directory relative to this skill, then apply its checklist to the PR diff.
+Use Read to load each relevant dimension file, then apply its checklist to the PR diff.
 
 ## Output format
 
@@ -60,9 +57,9 @@ List which dimension files were loaded and why.
 
 ### Issues
 Categorized by severity:
-- 🔴 **Critical** (must fix) — security vulnerability, data corruption, broken functionality
-- 🟡 **Important** (should fix) — bug-prone code, poor error handling, missing logs, standard violations
-- 🟢 **Suggestion** — style, refactoring, nice-to-have improvements
+- **Critical** (must fix) — security vulnerability, data corruption, broken functionality
+- **Important** (should fix) — bug-prone code, poor error handling, missing logs, standard violations
+- **Suggestion** — style, refactoring, nice-to-have improvements
 
 For each issue, cite the specific file and line number.
 
