@@ -19,8 +19,8 @@ return {
         model = 'google/gemini-2.5-flash',
       },
     },
-    cursor_applying_provider = 'openrouter',
-    provider = 'copilot',
+    cursor_applying_provider = 'opencode',
+    provider = 'opencode',
     behaviour = {
       --- ... existing behaviours
       enable_cursor_planning_mode = false, -- enable cursor planning mode!

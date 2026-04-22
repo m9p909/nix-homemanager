@@ -81,6 +81,7 @@
     pkgs.clojure # Clojure language
     pkgs.babashka # Native Clojure scripting
     pkgs.leiningen # Clojure build tool
+    pkgs.opencode # Code editor
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -255,6 +256,10 @@
   xdg.configFile."ghostty" = {
     source = ./config/ghostty;
     recursive = true;
+  };
+
+  xdg.configFile."opencode/opencode.json" = {
+    source = ./config/opencode/opencode.json;
   };
 
   # Let Home Manager install and manage itself.
