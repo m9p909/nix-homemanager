@@ -73,6 +73,7 @@
     pkgs.k9s # Terminal UI for Kubernetes
 
     # Build Tools
+    pkgs.jdk # Java Development Kit
     pkgs.maven # Java build tool
     pkgs.gradle # Build automation tool
 
