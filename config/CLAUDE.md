@@ -53,6 +53,14 @@
 - Clarify edge cases
 - Clarify contracts (inputs, outputs, error states) for each component
 
+### Failure Modes
+- For each component/step, identify what can go wrong (network, invalid input, missing deps, race conditions, partial writes)
+- Classify each failure: transient (retry), permanent (abort + notify), or degraded (fallback)
+- Define recovery strategy per failure: retry w/ backoff, circuit breaker, compensating action, or escalate to user
+- Identify blast radius: does this failure cascade? What else breaks?
+- Call out single points of failure and propose mitigations
+- List assumptions that, if wrong, invalidate the plan
+
 ## Execution
 - you can't test things yourself. Ask the user to test things
 - You may provide a plan for the user
@@ -96,4 +104,8 @@ pprint([(k, v["title"]) for k, v in data.items()][:10])
 ## HomeManager
 This pc uses home-manager to manage configuration for claude and others, whenever a config changes prefer to change it in home-manager
 This pc is also a mac
+
+## Folder structure
+In case you need code from another Repo, nearly all code is kept in ~/Repos
+use ls ~/Repos to check if you have access to the repo for things like dependencies
 
