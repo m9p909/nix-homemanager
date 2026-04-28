@@ -101,6 +101,8 @@ pprint([(k, v["title"]) for k, v in data.items()][:10])
 
 ```
 
+- Can also use babashka when it's easier. See babashka skill
+
 ## HomeManager
 This pc uses home-manager to manage configuration for claude and others, whenever a config changes prefer to change it in home-manager
 This pc is also a mac
@@ -108,4 +110,5 @@ This pc is also a mac
 ## Folder structure
 In case you need code from another Repo, nearly all code is kept in ~/Repos
 use ls ~/Repos to check if you have access to the repo for things like dependencies
+
 
