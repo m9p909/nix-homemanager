@@ -14,6 +14,7 @@
   - Avoid the generic terms "Service" or "Manager", they are appropriate but prefer more specific terms like provider, -inator, downloader, orchestrator, handler, processor
 
 ## Code Style
+- Defensive programming: prefer to log an error and/or fail instead of returning and continuing silently
 - encapsulate complexity in functions.
 - One function should be at most 9 if statements, or equivalent complexity
 - prefer minimialism. Smallest amount of code to get the job done
@@ -32,6 +33,7 @@
 - Use descriptive function names.
 - Prefer fewer arguments in functions
 - Have no side effects in functions when possible
+- Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
 
 
 ## Planning
