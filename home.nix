@@ -210,6 +210,7 @@
         "git"
         "terraform"
         "kubectl"
+        "jenv"
       ];
       theme = "robbyrussell";
     };
@@ -239,6 +240,8 @@
       fi
       ## IMPORTANT
       PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+      export PATH="$HOME/.jenv/bin:$PATH"
+      eval "$(jenv init -)"
        # Nix
        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
           . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
