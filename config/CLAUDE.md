@@ -63,6 +63,9 @@
 - Call out single points of failure and propose mitigations
 - List assumptions that, if wrong, invalidate the plan
 
+## Git
+- NEVER add "Co-authored-by" trailers to commits
+
 ## Execution
 - you can't test things yourself. Ask the user to test things
 - You may provide a plan for the user
