@@ -51,6 +51,7 @@
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
     pkgs.nodejs_22 # Node.js runtime
+    pkgs.deno # Deno runtime
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -142,6 +143,7 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+    OPENSPEC_TELEMETRY = "0";
   };
 
   programs.neovim = {
