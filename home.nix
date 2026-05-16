@@ -141,6 +141,7 @@
   #
   home.sessionVariables = {
     EDITOR = "nvim";
+    NPM_CONFIG_PREFIX = "$HOME/.npm-global";
   };
 
   programs.neovim = {
@@ -221,7 +222,7 @@
     history.size = 10000;
 
     initContent = ''
-      export PATH="$PATH:$HOME/.local/bin"
+      export PATH="$PATH:$HOME/.local/bin:$HOME/.npm-global/bin"
       path+=("$HOME/path/")
       ## IMPORTANT
       if [ -f "$HOME/.env" ]; then
