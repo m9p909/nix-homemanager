@@ -18,7 +18,8 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "25.11"; # Please read the comment before changing.
+  home.enableNixpkgsReleaseCheck = false;
+  home.stateVersion = "25.11";
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -28,7 +29,7 @@
     #pkgs.hello
     pkgs.nil
     pkgs.uv
-    pkgs.nixfmt-rfc-style
+    pkgs.nixfmt
     pkgs.git-town
     (pkgs.python313.withPackages (
       ps: with ps; [
@@ -49,7 +50,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
-    pkgs.nodejs_25 # Node.js runtime
+    pkgs.nodejs_24 # Node.js LTS runtime
 
     # Git Enhancements
     pkgs.delta # Better git diff viewer
@@ -80,6 +81,13 @@
     pkgs.clojure # Clojure language
     pkgs.babashka # Native Clojure scripting
     pkgs.leiningen # Clojure build tool
+
+    # Scala Ecosystem
+    pkgs.scala_3 # Scala 3 compiler
+    pkgs.sbt # Scala build tool
+    pkgs.coursier # Scala artifact fetching and app management
+    pkgs.scalafmt # Scala code formatter
+    pkgs.metals # Scala language server (for editor LSP)
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -150,8 +158,10 @@
 
   programs.neovim = {
     enable = true;
-    viAlias = true; # symlink vi → nvim
-    vimAlias = true; # symlink vim → nvim
+    viAlias = true;
+    vimAlias = true;
+    withRuby = false;
+    withPython3 = false;
   };
 
   programs.lazygit = {
