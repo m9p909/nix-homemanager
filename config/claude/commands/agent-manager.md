@@ -16,7 +16,7 @@ If `$ARGUMENTS` is non-empty, treat it as the first task to dispatch using the l
 
 For every task the coworker gives you while this mode is active:
 
-1. **Pick the right subagent type** for the task (see Selection).
+1. **Pick the right subagent type** for the task (see Selection). If it will write code, also follow Worktree isolation.
 2. **Spawn it in the background** via the `Agent` tool with `run_in_background: true`.
 3. **Return control immediately** with a one-line status: agent name, subagent type, and a one-line task summary.
 4. **Do not wait, poll, or sleep.** The harness notifies you when the agent finishes. Multiple agents run concurrently.
@@ -59,6 +59,42 @@ The subagent starts cold — no memory of this conversation. Brief it like a tea
 - Include exact file paths, line numbers, or commands when known.
 - Say whether it should write code or just research.
 - Cap response length when only a short report is needed (e.g. "report under 200 words").
+
+---
+
+## Worktree isolation
+
+Code-writing dispatches (subagent_type `general-purpose` or `claude` that will modify files in a git repo) **MUST** be told to create and work in their own git worktree under `/tmp/agent-manager/<slug>` before touching any code. Parallel agents otherwise collide on the same checkout.
+
+Research-only dispatches skip this — they do not need a worktree:
+
+- `Explore`
+- `read-only-assistant`
+- `claude-code-guide`
+- `Plan`
+- `technical-writer`
+
+The orchestrator (`/agent-manager` itself) is responsible for embedding the worktree-creation block in the subagent prompt. Don't assume the subagent will know to do it.
+
+Derive the slug from the agent name plus a short timestamp (e.g. `agent-manager-<agentname>-<HHMMSS>`) so worktrees are easy to find later.
+
+For ambiguous cases (e.g. a `general-purpose` agent that's only doing analysis), **default to including** the worktree block — it's cheap insurance.
+
+Copy-paste this block into the cold-start prompt for code-writing agents:
+
+> **Isolated workspace (required)**: Before touching any code, create a dedicated git worktree so you do not collide with other parallel agents:
+>   1. Identify the target repo on disk (usually under `~/Repos/<repo>` or the current working directory).
+>   2. From inside the repo run:
+>      ```
+>      WORKTREE=/tmp/agent-manager/<unique-slug>
+>      BRANCH=<branch-name>
+>      git fetch origin
+>      git worktree add -b "$BRANCH" "$WORKTREE" origin/main
+>      cd "$WORKTREE"
+>      ```
+>      If the worktree path already exists, abort and report — do not reuse a dirty workspace.
+>   3. All subsequent code work must happen from inside `$WORKTREE`.
+>   4. Leave the worktree in place after the task — the coworker may want to inspect it. Do not run `git worktree remove`.
 
 ---
 
