@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to OpenCode when working with code in this repository.
 
 ## Overview
 
@@ -38,8 +38,11 @@ home.nix            # Main config: packages, programs, shell aliases, env vars
 config/
   nvim/
     init.lua        # Kickstart.nvim base config
-    lua/custom/plugins/  # Custom plugins (avante, claude_code, copilot)
+    lua/custom/plugins/  # Custom plugins (avante, opencode, copilot)
   CLAUDE.md         # AI coding standards (used by Avante)
+  opencode/
+    commands/        # Custom OpenCode slash commands
+    skills/          # Custom OpenCode agent skills
 k8s/                # Kubernetes manifests for cloud deployment
 Dockerfile          # Debian + Nix container image
 docker-compose.yml  # Local container dev setup

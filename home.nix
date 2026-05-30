@@ -116,12 +116,12 @@
     ".tmux.conf" = {
       source = ./config/.tmux.conf;
     };
-    ".claude/commands" = {
-      source = ./config/claude/commands;
+    ".config/opencode/commands" = {
+      source = ./config/opencode/commands;
       recursive = true;
     };
-    ".claude/skills" = {
-      source = ./config/claude/skills;
+    ".config/opencode/skills" = {
+      source = ./config/opencode/skills;
       recursive = true;
     };
   };
@@ -218,8 +218,7 @@
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
       git-sync = "git fetch --tags --force && git town sync";
-      claude = "claude --verbose";
-      claude-danger = "claude --dangerously-skip-permissions --verbose";
+      oc = "opencode";
       search-code = "rg";
       find-files = "fd";
     };
@@ -242,10 +241,6 @@
        fi
        # End Nix
       		'';
-  };
-
-  programs.claude-code = {
-    enable = true;
   };
 
   xdg.configFile."nvim" = {
