@@ -83,6 +83,15 @@
     pkgs.leiningen # Clojure build tool
     pkgs.opencode # Code editor
 
+    # OCaml Ecosystem
+    pkgs.ocaml
+    pkgs.opam
+    pkgs.dune_3
+    pkgs.ocamlPackages.ocaml-lsp
+    pkgs.ocamlformat
+    pkgs.ocamlPackages.utop
+    pkgs.ocamlPackages.odoc
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -221,6 +230,7 @@
       oc = "opencode";
       search-code = "rg";
       find-files = "fd";
+      gas = "/usr/local/bin/gc";
     };
     history.size = 10000;
 
