@@ -1,6 +1,5 @@
 ---
-allowed-tools: Bash(git:*), Bash(ls:*), Bash(find:*), Bash(head:*), Bash(cat:*), Read, Glob
-description: Read file tree and git history to gain context on what we are working on
+description: Read file tree and git history to gain context on current work
 ---
 
 # Catchup - Understand Current Work Context
@@ -38,6 +37,6 @@ Based on the git history, current branch name, staged/unstaged changes, and rece
 3. Note any patterns in the changes (new features, refactoring, bug fixes, etc.)
 4. Highlight any potential concerns or next steps
 5. If there are untracked files, mention what they appear to be for
-6. Recommend running `git diff main` or `git diff develop` to see the full set of changes introduced on this branch
+6. Recommend running `git diff main` or `git diff develop` to see the full set of changes
 
 Keep the summary concise but informative.

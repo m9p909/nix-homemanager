@@ -19,11 +19,16 @@ return {
         model = 'google/gemini-2.5-flash',
       },
     },
-    cursor_applying_provider = 'openrouter',
-    provider = 'openrouter',
+    cursor_applying_provider = 'opencode',
+    provider = 'opencode',
     behaviour = {
       --- ... existing behaviours
       enable_cursor_planning_mode = false, -- enable cursor planning mode!
+    },
+    mappings = {
+      files = {
+        add_current = '<leader>aA', -- was <leader>ac, moved to avoid conflict with ClaudeCode
+      },
     },
     --    system_prompt = function()
     --      local hub = require('mcphub').get_hub_instance()

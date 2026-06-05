@@ -18,6 +18,7 @@ The `/add-command` command shows this guide for creating new slash commands. It 
 ## Command Locations
 - **Personal**: `~/.claude/commands/` (available across all projects)
 - **Project**: `.claude/commands/` (shared with team, shows "(project)")
+- **Home-manager managed**: `~/.config/home-manager/config/claude/commands/` — use this for commands that should be version-controlled and deployed via home-manager. These are symlinked to `~/.claude/commands/` on `home-manager switch`.
 
 ## Basic Structure
 
@@ -93,6 +94,10 @@ echo "Ask GPT-5 about: $ARGUMENTS" > ~/.claude/commands/ai/gpt5.md
 - `description`: Brief description (shows in /help)
 - `argument-hint`: Help text for arguments
 - `model`: Specific model to use
+
+## When to Use Home-manager
+
+If the command should persist across machines or be tracked in git, create it in `~/.config/home-manager/config/claude/commands/` and run `update` (or `home-manager switch --flake ~/.config/home-manager#jack`) to deploy it.
 
 ## Best Practices
 

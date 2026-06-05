@@ -50,7 +50,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
-    pkgs.nodejs_22 # Node.js runtime
+    pkgs.nodejs_25 # Node.js runtime
     pkgs.deno # Deno runtime
 
     # Git Enhancements
@@ -73,6 +73,7 @@
     pkgs.k9s # Terminal UI for Kubernetes
 
     # Build Tools
+    pkgs.jdk # Java Development Kit
     pkgs.maven # Java build tool
     pkgs.gradle # Build automation tool
 
@@ -80,6 +81,16 @@
     pkgs.clojure # Clojure language
     pkgs.babashka # Native Clojure scripting
     pkgs.leiningen # Clojure build tool
+    pkgs.opencode # Code editor
+
+    # OCaml Ecosystem
+    pkgs.ocaml
+    pkgs.opam
+    pkgs.dune_3
+    pkgs.ocamlPackages.ocaml-lsp
+    pkgs.ocamlformat
+    pkgs.ocamlPackages.utop
+    pkgs.ocamlPackages.odoc
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -114,12 +125,12 @@
     ".tmux.conf" = {
       source = ./config/.tmux.conf;
     };
-    ".claude/commands" = {
-      source = ./config/claude/commands;
+    ".config/opencode/commands" = {
+      source = ./config/opencode/commands;
       recursive = true;
     };
-    ".claude/skills" = {
-      source = ./config/claude/skills;
+    ".config/opencode/skills" = {
+      source = ./config/opencode/skills;
       recursive = true;
     };
   };
@@ -217,9 +228,10 @@
       update = "home-manager switch";
       avante = ''nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'';
       git-sync = "git fetch --tags --force && git town sync";
-      claude-danger = "claude --dangerously-skip-permissions";
+      oc = "opencode";
       search-code = "rg";
       find-files = "fd";
+      gas = "/usr/local/bin/gc";
     };
     history.size = 10000;
 
@@ -242,10 +254,6 @@
       		'';
   };
 
-  programs.claude-code = {
-    enable = true;
-  };
-
   xdg.configFile."nvim" = {
     source = ./config/nvim;
     recursive = true;
@@ -254,6 +262,10 @@
   xdg.configFile."ghostty" = {
     source = ./config/ghostty;
     recursive = true;
+  };
+
+  xdg.configFile."opencode/opencode.json" = {
+    source = ./config/opencode/opencode.json;
   };
 
   # Let Home Manager install and manage itself.
