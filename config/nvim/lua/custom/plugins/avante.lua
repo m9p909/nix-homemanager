@@ -18,13 +18,20 @@ return {
         api_key_name = 'OPENAI_API_KEY',
         model = 'google/gemini-2.5-flash',
       },
+      opencode_go = {
+        __inherited_from = 'openai',
+        endpoint = 'https://opencode.ai/zen/go/v1/chat/completions',
+        api_key_name = 'OPENCODE_GO_API_KEY',
+        model = 'deepseek-v4-flash',
+      },
+      opencode_go_pro = {
+        __inherited_from = 'openai',
+        endpoint = 'https://opencode.ai/zen/go/v1/chat/completions',
+        api_key_name = 'OPENCODE_GO_API_KEY',
+        model = 'deepseek-v4-pro',
+      },
     },
-    cursor_applying_provider = 'opencode',
-    provider = 'opencode',
-    behaviour = {
-      --- ... existing behaviours
-      enable_cursor_planning_mode = false, -- enable cursor planning mode!
-    },
+    provider = 'opencode_go',
     mappings = {
       files = {
         add_current = '<leader>aA', -- was <leader>ac, moved to avoid conflict with ClaudeCode
@@ -57,10 +64,8 @@ return {
     --- The below dependencies are optional,
     'echasnovski/mini.pick', -- for file_selector provider mini.pick
     'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
-    'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
     'ibhagwan/fzf-lua', -- for file_selector provider fzf
     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
-    'zbirenbaum/copilot.lua', -- for providers='copilot'
     {
       -- support for image pasting
       'HakonHarnes/img-clip.nvim',
