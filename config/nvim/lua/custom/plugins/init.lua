@@ -14,14 +14,5 @@ end
 
 map('<leader>df', vim.diagnostic.open_float, 'Describe Float')
 return {
-  {
-    'ThePrimeagen/refactoring.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    config = function()
-      require('refactoring').setup()
-    end,
-  },
+	dir = "~/Documents/myai.nvim"
 }

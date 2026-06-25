@@ -6,14 +6,11 @@ return {
       vim.o.autoread = true
     end,
     keys = {
-      { '<leader>ac', function() require('opencode').toggle() end, desc = 'Toggle OpenCode' },
-      { '<leader>af', function() require('opencode').focus() end, desc = 'Focus OpenCode' },
-      { '<leader>ar', function() require('opencode').command('session.select') end, desc = 'Resume/Select session' },
+      { '<leader>ac', function() require('opencode').select() end, desc = 'Select OpenCode' },
+      { '<leader>af', function() require('opencode').ask() end, desc = 'Ask OpenCode' },
       { '<leader>am', function() require('opencode').command('agent.cycle') end, desc = 'Cycle agent/model' },
       { '<leader>ab', function() require('opencode').prompt('@buffer ') end, desc = 'Add current buffer' },
       { '<leader>as', function() require('opencode').ask('@this: ') end, mode = 'v', desc = 'Send to OpenCode' },
-      { '<leader>as', function() require('opencode').ask('@this: ') end, desc = 'Ask OpenCode' },
-
       { '<leader>aa', function() require('opencode').command('session.redo') end, desc = 'Accept diff' },
       { '<leader>ad', function() require('opencode').command('session.undo') end, desc = 'Deny diff' },
 
