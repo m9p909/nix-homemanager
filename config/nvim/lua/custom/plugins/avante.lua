@@ -6,11 +6,11 @@ return {
     -- add any opts here
     -- for example
     providers = {
-      openrouter = {
+      litellm = {
         __inherited_from = 'openai',
-        endpoint = 'https://openrouter.ai/api/v1',
+        endpoint = 'https://lite-llm.mymaas.net/api/v1',
         api_key_name = 'OPENAI_API_KEY',
-        model = 'anthropic/claude-sonnet-4.5',
+        model = 'openai/gemini-3-flash-preview',
       },
       openrouter2 = {
         __inherited_from = 'openai',
@@ -19,8 +19,8 @@ return {
         model = 'google/gemini-2.5-flash',
       },
     },
-    cursor_applying_provider = 'openrouter',
-    provider = 'claude-code',
+    cursor_applying_provider = 'litellm',
+    provider = 'litellm',
     behaviour = {
       --- ... existing behaviours
       enable_cursor_planning_mode = false, -- enable cursor planning mode!

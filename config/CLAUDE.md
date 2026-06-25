@@ -34,6 +34,10 @@
 - Prefer fewer arguments in functions
 - Have no side effects in functions when possible
 - Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
+- Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
+- Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
+- Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
+- Dont add comments
 
 
 ## Planning

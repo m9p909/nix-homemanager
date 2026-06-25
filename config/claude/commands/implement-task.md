@@ -27,7 +27,44 @@ If `$ARGUMENTS` is empty, abort immediately with a final report stating "no task
 
 ---
 
-## Phase 1: Investigate
+## Phase 1: Setup worktree
+
+All subsequent work happens inside an isolated git worktree so parallel `/implement-task` agents never collide on the same checkout.
+
+1. **Detect the target repo.** If `$ARGUMENTS` (or `/investigate`'s upcoming output) names a repo path, use it. Otherwise default to the current working directory's repo root (`git rev-parse --show-toplevel`). If that is not a git repo, abort with `not inside a git repo, cannot create worktree`.
+
+2. **Derive the slug + branch.** Same rules as the implementation phase:
+   - Jira key parseable from `$ARGUMENTS` → branch `jclarke/<JIRA-KEY>-<slug>` (e.g. `jclarke/DATAGO-12345-add-rate-limiter`).
+   - No Jira key → `jclarke/<slug>`.
+   - Slug = kebab-cased, max ~40 chars, lowercase, non-alphanumerics collapsed to `-`, no leading/trailing `-`.
+
+3. **Create the worktree** off the freshly-fetched default branch. The worktree path is `/tmp/implement-task/<branch-leaf>` where `<branch-leaf>` is the final path segment of the branch name (e.g. `DATAGO-12345-add-rate-limiter`):
+
+   ```bash
+   REPO_ROOT="$(git rev-parse --show-toplevel)"
+   DEFAULT_BRANCH="$(git -C "$REPO_ROOT" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')"
+   DEFAULT_BRANCH="${DEFAULT_BRANCH:-main}"
+   BRANCH="jclarke/<JIRA-KEY>-<slug>"   # or jclarke/<slug>
+   LEAF="${BRANCH##*/}"
+   WORKTREE="/tmp/implement-task/${LEAF}"
+
+   mkdir -p /tmp/implement-task
+   git -C "$REPO_ROOT" fetch origin --quiet
+   git -C "$REPO_ROOT" worktree add -b "$BRANCH" "$WORKTREE" "origin/$DEFAULT_BRANCH"
+   cd "$WORKTREE"
+   ```
+
+   If `$WORKTREE` already exists, abort with `worktree path already exists: $WORKTREE` — do not reuse a dirty workspace, do not delete it (it may belong to another in-flight agent).
+
+4. **Pin the worktree.** Every remaining phase runs from inside `$WORKTREE`. Do not `cd` out of it. The implementation phase must not re-create the branch — it already exists.
+
+5. **Leave the worktree in place** after the PR is marked ready. Do not run `git worktree remove`. The coworker may want to inspect the working copy.
+
+Log `WORKTREE`, `BRANCH`, and the resolved `DEFAULT_BRANCH` before continuing.
+
+---
+
+## Phase 2: Investigate
 
 Run the existing `/investigate` command via the `Skill` tool, passing `$ARGUMENTS`. Wait for its structured report (Problem statement, Affected code, Timeline, Key observations, Test coverage, Open questions).
 
@@ -35,7 +72,7 @@ Do not propose implementations yet. If the report has unresolved open questions,
 
 ---
 
-## Phase 2: Plan the implementation
+## Phase 3: Plan the implementation
 
 Save the plan to `.claude/plans/implement-task-<slug>.md` in the working repo (slug = Jira key slug if present, e.g. `datago-12345`, else first 40 chars of the task summary kebab-cased). Create the directory if missing. This keeps the plan reviewable and out of git history.
 
@@ -53,14 +90,9 @@ Log the plan path and a one-paragraph summary, then proceed directly to implemen
 
 ---
 
-## Phase 3: Implement
+## Phase 4: Implement
 
-Create a branch off the default branch if not already on a feature branch. Branch naming default is `jclarke/<JIRA-KEY>-<slug>`:
-
-- If a Jira key is parseable from `$ARGUMENTS` (e.g. `DATAGO-12345`, either bare or inside a Jira URL like `https://sol-jira.atlassian.net/browse/DATAGO-12345`), use `/create-branch` (preferred — pass the Jira URL or key) to produce `jclarke/DATAGO-12345-<slug>`. Example: `jclarke/DATAGO-12345-add-rate-limiter`.
-- If `/create-branch` fails or no Jira URL is available, fall back to `git checkout -b jclarke/<JIRA-KEY>-<slug>` directly.
-- Slug = kebab-cased short summary, max ~40 chars, derived from the Jira title or `$ARGUMENTS` description (lowercase, replace spaces and special chars with `-`, strip leading/trailing `-`).
-- If no Jira key is found anywhere in `$ARGUMENTS`, use `git checkout -b jclarke/<slug>` (no key prefix). Example: `jclarke/add-rate-limiter`.
+The branch and worktree already exist from Phase 1 — do **not** recreate them. All commands run from inside `$WORKTREE`.
 
 For each step in the plan:
 
@@ -75,7 +107,7 @@ If a step gets stuck or assumptions in the plan turn out wrong: re-derive the as
 
 ---
 
-## Phase 4: Open draft PR
+## Phase 5: Open draft PR
 
 1. Push the branch with `-u` if it has no upstream.
 2. Detect the PR template, in order: `.github/PULL_REQUEST_TEMPLATE.md`, `.github/pull_request_template.md`, `docs/pull_request_template.md`. If found, fill it in. Otherwise use a default body with **Summary**, **Approach**, **Test plan**, **Assumptions** (list every autonomous decision made in phases 1-3 so a human reviewer can sanity-check them).
@@ -105,7 +137,7 @@ Log the PR URL.
 
 ---
 
-## Phase 5: CI gate
+## Phase 6: CI gate
 
 Wait for **all** GitHub Actions checks **and** SonarQube to pass before entering the review loop. SonarQube reports as a GitHub check (look for a name like `SonarQube`, `SonarCloud Code Analysis`, or similar) — treat it like any other required check.
 
@@ -155,11 +187,11 @@ Increment the fix-attempt counter on each restart. If the counter exceeds 5, abo
 
 ### Step 3: All green
 
-Only when every check reports success, proceed to Phase 6.
+Only when every check reports success, proceed to Phase 7.
 
 ---
 
-## Phase 6: Review loop
+## Phase 7: Review loop
 
 Cap: **5 iterations**. If not converged after 5, abort with a non-zero exit and a final report listing remaining review issues, iteration count, and the latest review verdict. Do not ask the coworker.
 
@@ -170,7 +202,7 @@ For each iteration:
    > Return the full review output verbatim, including the verdict line.
 
 2. **Verdict check**:
-   - **APPROVE** or empty / "no issues" -> exit loop, go to Phase 7.
+   - **APPROVE** or empty / "no issues" -> exit loop, go to Phase 8.
    - **REQUEST CHANGES** -> continue.
 
 3. **Fix**: Use the `Agent` tool with the full list of issues and prompt:
@@ -186,10 +218,10 @@ For each iteration:
 
 ---
 
-## Phase 7: Mark ready
+## Phase 8: Mark ready
 
 Once the loop returns approval:
 
 1. `gh pr ready <PR>` to flip draft -> ready for review.
 2. `gh pr checks <PR>` to confirm CI is healthy.
-3. Emit a final report (stdout) with: PR URL, iteration count, list of autonomous assumptions made, and a one-paragraph summary of the implementation.
+3. Emit a final report (stdout) with: PR URL, iteration count, **worktree path** (so the coworker knows where to inspect the working copy), list of autonomous assumptions made, and a one-paragraph summary of the implementation.

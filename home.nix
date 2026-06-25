@@ -239,6 +239,11 @@
     };
     history.size = 10000;
 
+    profileExtra = ''
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+      export PATH="$PATH:/Users/jackclarke/Library/Application Support/JetBrains/Toolbox/scripts"
+    '';
+
     initContent = ''
       export PATH="$PATH:$HOME/.local/bin"
       path+=("$HOME/path/")
