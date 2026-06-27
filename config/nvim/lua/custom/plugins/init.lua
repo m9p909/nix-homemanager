@@ -13,3 +13,5 @@ local map = function(keys, func, desc, mode)
 end
 
 map('<leader>df', vim.diagnostic.open_float, 'Describe Float')
+
+return {}
