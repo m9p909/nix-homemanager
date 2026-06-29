@@ -13,15 +13,5 @@ local map = function(keys, func, desc, mode)
 end
 
 map('<leader>df', vim.diagnostic.open_float, 'Describe Float')
-return {
-  {
-    'ThePrimeagen/refactoring.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    config = function()
-      require('refactoring').setup()
-    end,
-  },
-}
+
+return {}
