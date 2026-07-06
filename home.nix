@@ -196,6 +196,10 @@
       user.name = "m9p909";
       user.email = "jackfulcher09@gmail.com";
       init.defaultBranch = "main";
+      pull.ff = "only";
+      push.autoSetupRemote = true;
+      core.editor = "nvim";
+      credential.helper = "store";
     };
   };
 
