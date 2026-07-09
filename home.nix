@@ -41,6 +41,8 @@
     pkgs.ripgrep # Fast grep alternative
     pkgs.fd # Fast find alternative
     pkgs.bat # Better cat with syntax highlighting
+    pkgs.opencode # Code editor
+    pkgs.tree-sitter
 
     # Development Tools
     pkgs.jq # JSON processor for CLI
@@ -50,7 +52,7 @@
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
     pkgs.go_1_25
-    pkgs.nodejs_25 # Node.js runtime
+    pkgs.nodejs_26 # Node.js runtime
     pkgs.deno # Deno runtime
 
     # Git Enhancements
@@ -81,7 +83,7 @@
     pkgs.clojure # Clojure language
     pkgs.babashka # Native Clojure scripting
     pkgs.leiningen # Clojure build tool
-    pkgs.opencode # Code editor
+
 
     # OCaml Ecosystem
     pkgs.ocaml
