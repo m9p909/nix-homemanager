@@ -503,6 +503,19 @@ Note: The Leader key is what you will press when you want to access your keybind
       (start/tangle-config)
       (load-file (expand-file-name "init.el" user-emacs-directory)))
 
+    (defun start/eval-current-form ()
+      "Evaluate the current Org source block or CIDER sexp."
+      (interactive)
+      (cond
+       ((derived-mode-p 'org-mode)
+        (if (org-in-src-block-p)
+            (org-babel-execute-src-block)
+          (user-error "Point is not inside an Org source block")))
+       ((derived-mode-p 'clojure-mode 'cider-repl-mode)
+        (cider-eval-last-sexp))
+       (t
+        (user-error "No evaluation command configured for %s" major-mode))))
+
     (use-package general
       ;; :after (evil) ;; <- evil
       :config
@@ -561,7 +574,7 @@ Note: The Leader key is what you will press when you want to access your keybind
 
       (start/leader-keys
         "e" '(:ignore t :wk "Languages")
-        "e e" '(eglot-reconnect :wk "Eglot Reconnect")
+        "e e" '(start/eval-current-form :wk "Eval form/sexp")
         "e d" '(eldoc-doc-buffer :wk "Eldoc Buffer")
         "e f" '(eglot-format :wk "Eglot Format")
 
