@@ -39,7 +39,6 @@
 - [[#multi-file-example][Multi File Example]]
   - [[#adding-the-lisp-directory-to-load-path][Adding the lisp directory to load-path]]
   - [[#sourcing-the-files][Sourcing the files]]
-  - [[#using-the-file][Using the file]]
 - [[#version-control][Version Control]]
   - [[#magit][Magit]]
   - [[#diff-hl][Diff-hl]]
@@ -60,6 +59,7 @@
   - [[#which-key][Which-Key]]
   - [[#ws-butler][Ws-butler]]
   - [[#esup][Esup]]
+  - [[#clipboard][Clipboard]]
 
 * Introduction
 #+begin_src emacs-lisp :tangle no
@@ -622,6 +622,10 @@ Note: The Leader key is what you will press when you want to access your keybind
         "t" '(:ignore t :wk "Toggle")
         "t t" '(visual-line-mode :wk "Toggle truncated lines (wrap)")
         "t l" '(display-line-numbers-mode :wk "Toggle line numbers"))
+
+      (start/leader-keys
+       "a" '(:ignore t :wk "AI")
+        "a e" '(myai-edit :wk "AI edit"))
       )
 
     ;; Fix general.el leader key not working instantly in messages buffer with evil mode
@@ -633,6 +637,23 @@ Note: The Leader key is what you will press when you want to access your keybind
     ;;              (with-current-buffer messages-buffer
     ;;                (evil-normalize-keymaps))))
     ;;          nil nil t))
+#+end_src
+
+*** Gptel
+Use gptel as the LLM client.
+#+begin_src emacs-lisp :tangle no
+        (use-package gptel
+          :custom
+          (gptel-model "gpt-4o")
+          :config
+          (setq gptel-default-mode 'markdown-mode)
+         (setq gptel-backend (gptel-make-openai "MyOAICOMPATIBLE"          ; Name shown in the gptel menu
+                            :host (getenv "OPENAI_BASE_URL")                 ; API hostname
+                            :protocol "https"                        ; or "http" for local servers
+                            :endpoint "/v1/chat/completions"          ; The chat completions path
+                            :stream t                                ; Enable streaming responses
+                            :key (getenv "OPENAI_API_KEY")         ; API key from env va
+                            :models '("deepseek-v4-flash")))) 
 #+end_src
 
 *** Creating keybindings the built in way
@@ -1075,22 +1096,12 @@ Adds the lisp directory to Emacs's load path to search for elisp files.
 This is necessary because Emacs does not search the entire user-emacs-directory.
 The directory name can be anything, just add it to the load-path.
 #+begin_src emacs-lisp
-    ;; (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+    (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 #+end_src
 
 ** Sourcing the files
-To use the elisp files we need to load it.
-Notes:
-- Don't forget the file and the provide name needs to be the same.
-- When naming elisp files, functions, it is recommended to use a group name (e.g. init-, start- or any custom name), so it does not get mixed up with other names, functions.
 #+begin_src emacs-lisp
-    ;; (require 'start-multiFileExample)
-#+end_src
-
-** Using the file
-And now we can use everything from that file.
-#+begin_src emacs-lisp
-    ;; (start/hello)
+    (require 'myai)
 #+end_src
 
 * Version Control
@@ -1464,4 +1475,9 @@ Benchmark Emacs Startup time: M-x esup
       :defer
       :custom
       (esup-depth 0))
+#+end_src
+
+** Clipboard
+#+begin_src emacs-lisp
+(setq select-enable-clipboard t)
 #+end_src
