@@ -1105,11 +1105,7 @@ Make Emacs use the $PATH set up by the user's shell
 *** ghostel
 #+begin_src emacs-lisp
 (use-package ghostel
-  :ensure t
-  :bind (
-         ("C-SPC m" . ghostel)
-         :map ghostel-semi-char-mode-map
-       )))
+  :ensure t)
 
 
 (use-package evil-ghostel
