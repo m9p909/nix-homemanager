@@ -641,14 +641,12 @@ Note: The Leader key is what you will press when you want to access your keybind
 
 *** Gptel
 Use gptel as the LLM client.
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
         (use-package gptel
-          :custom
-          (gptel-model "gpt-4o")
           :config
           (setq gptel-default-mode 'markdown-mode)
          (setq gptel-backend (gptel-make-openai "MyOAICOMPATIBLE"          ; Name shown in the gptel menu
-                            :host (getenv "OPENAI_BASE_URL")                 ; API hostname
+                            :host (or (getenv "OPENAI_BASE_URL") "idk")                 ; API hostname
                             :protocol "https"                        ; or "http" for local servers
                             :endpoint "/v1/chat/completions"          ; The chat completions path
                             :stream t                                ; Enable streaming responses
@@ -1078,9 +1076,11 @@ We setup eat with eshell, if you want to use bash, zsh etc., check out their git
 
 If you want a faster and more responsive terminal emulator try out vterm.
 #+begin_src emacs-lisp
-    (use-package eat
-      :defer
-      :hook ('eshell-load-hook #'eat-eshell-mode))
+(use-package eat
+  :defer
+  :hook ('eshell-load-hook #'eat-eshell-mode)
+  :bind (:map eat-mode-map
+              ("C-c e" . (lambda () (interactive) (eat-term-send-string  eat-terminal "\e")))))
 #+end_src
 
 *** Exec-path-from-shell
@@ -1265,11 +1265,11 @@ One alternative is ivy and counsel, check out the [[https://github.com/MiniApoll
     (use-package vertico
       :hook (after-init . vertico-mode)
       ;; Vim keybinds
-      ;; :bind (:map vertico-map
-      ;;            ("C-j" . vertico-next)
-      ;;            ("C-k" . vertico-previous)
-      ;;            ("C-u" . vertico-scroll-down)
-      ;;            ("C-d" . vertico-scroll-up))
+       :bind (:map vertico-map
+                  ("C-j" . vertico-next)
+                  ("C-k" . vertico-previous)
+                  ("C-u" . vertico-scroll-down)
+                  ("C-d" . vertico-scroll-up))
       :custom
       (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
       )
