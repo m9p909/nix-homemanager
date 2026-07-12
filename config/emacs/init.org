@@ -628,12 +628,12 @@ Note: The Leader key is what you will press when you want to access your keybind
         "a e" '(myai-edit :wk "AI edit")))
 
 
-(dotimes (i 9)
-  (let ((n (1+ i))
-        (key (number-to-string (1+ i))))
-    (eval `(start/leader-keys
-             ,key '((lambda () (interactive) (tab-bar-select-tab ,n))
-                    :wk ,(format "Tab %d" n))))))
+        (dotimes (i 9)
+          (let ((n (1+ i))
+                (key (number-to-string (1+ i))))
+            (eval `(start/leader-keys
+                    ,key '((lambda () (interactive) (tab-bar-select-tab ,n))
+                            :wk ,(format "Tab %d" n))))))
 
 
 
