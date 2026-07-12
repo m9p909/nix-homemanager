@@ -449,8 +449,8 @@ Notes:
       :hook (after-init . evil-mode)
       :init
       (evil-mode)
-      :config
-      (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
+;;      :config
+;;      (evil-set-initial-state 'eat-mode 'insert) ;; Set initial state in eat terminal to insert mode
       ;; (global-set-key [C-backspace] 'evil-delete-backward-word) ;; Make C-backspace less agressive
       :custom
       (evil-want-keybinding nil)    ;; Disable evil bindings in other modes (It's not consistent and not good)
@@ -517,9 +517,9 @@ Note: The Leader key is what you will press when you want to access your keybind
         (user-error "No evaluation command configured for %s" major-mode))))
 
     (use-package general
-      ;; :after (evil) ;; <- evil
+       :after (evil) ;; <- evil
       :config
-      ;; (general-evil-setup) ;; <- evil
+       (general-evil-setup) ;; <- evil
       ;; Set up 'C-SPC' as the leader key
       (general-create-definer start/leader-keys
         ;; :states '(normal insert visual motion emacs) ;; <- evil
@@ -532,7 +532,7 @@ Note: The Leader key is what you will press when you want to access your keybind
         "," '(embark-act :wk "Embark act")
         "TAB" '(comment-line :wk "Comment lines")
         "q" '(flymake-show-buffer-diagnostics :wk "Flymake buffer diagnostic")
-        "c" '(eat :wk "Eat terminal")
+        "c" '(ghostel :wk "Ghostel terminal")
 
         ;; Projectile
         "p" '(projectile-command-map :wk "Projectile")
@@ -625,8 +625,17 @@ Note: The Leader key is what you will press when you want to access your keybind
 
       (start/leader-keys
        "a" '(:ignore t :wk "AI")
-        "a e" '(myai-edit :wk "AI edit"))
-      )
+        "a e" '(myai-edit :wk "AI edit")))
+
+
+(dotimes (i 9)
+  (let ((n (1+ i))
+        (key (number-to-string (1+ i))))
+    (eval `(start/leader-keys
+             ,key '((lambda () (interactive) (tab-bar-select-tab ,n))
+                    :wk ,(format "Tab %d" n))))))
+
+
 
     ;; Fix general.el leader key not working instantly in messages buffer with evil mode
     ;;(use-package emacs
@@ -638,6 +647,9 @@ Note: The Leader key is what you will press when you want to access your keybind
     ;;                (evil-normalize-keymaps))))
     ;;          nil nil t))
 #+end_src
+
+#+RESULTS:
+: t
 
 *** Gptel
 Use gptel as the LLM client.
@@ -1075,7 +1087,7 @@ It's more portable and less overhead for users over like vterm or eshell.
 We setup eat with eshell, if you want to use bash, zsh etc., check out their git [[https://codeberg.org/akib/emacs-eat][repository]] how to do it.
 
 If you want a faster and more responsive terminal emulator try out vterm.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package eat
   :defer
   :hook ('eshell-load-hook #'eat-eshell-mode)
@@ -1089,6 +1101,29 @@ Make Emacs use the $PATH set up by the user's shell
     (use-package exec-path-from-shell
       :hook (after-init . exec-path-from-shell-initialize))
 #+end_src
+
+*** ghostel
+#+begin_src emacs-lisp
+(use-package ghostel
+  :ensure t
+  :bind (
+         ("C-SPC m" . ghostel)
+         :map ghostel-semi-char-mode-map
+       )))
+
+
+(use-package evil-ghostel
+  :ensure t
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode)
+  :init (setq-default evil-ghostel-escape 'terminal)
+  :bind (
+         :map evil-ghostel-mode-map
+          ("C-c C-e" . evil-normal-state)))
+
+#+end_src
+
+
 
 * Multi File Example
 ** Adding the lisp directory to load-path
