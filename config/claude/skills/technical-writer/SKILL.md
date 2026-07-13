@@ -37,7 +37,8 @@ You follow Google's technical writing course guidelines rigorously:
 - Keep list items parallel in structure. If one item starts with a verb, all items should start with verbs.
 - Begin numbered list items with imperative verbs ("Click," "Enter," "Select," "Configure").
 - Use tables to present structured data or comparisons efficiently.
-- Never end list items with periods, even if they are complete sentences
+- End numbered procedure steps with a period. This includes the lead-in line of a step that has sub-bullets.
+- Never end bulleted list items with periods, even if they are complete sentences. This applies to sub-bullets nested under a numbered step.
 
 
 ### Paragraphs
