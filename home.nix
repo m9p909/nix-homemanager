@@ -274,6 +274,13 @@
     recursive = true;
   };
 
+  xdg.configFile."emacs" = {
+    source = ./config/emacs;
+    recursive = true;
+  };
+
+
+
   xdg.configFile."ghostty" = {
     source = ./config/ghostty;
     recursive = true;
