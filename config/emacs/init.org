@@ -60,6 +60,7 @@
   - [[#ws-butler][Ws-butler]]
   - [[#esup][Esup]]
   - [[#clipboard][Clipboard]]
+- [[#agent-shell][Agent Shell]]
 
 * Introduction
 #+begin_src emacs-lisp :tangle no
@@ -1511,4 +1512,10 @@ Benchmark Emacs Startup time: M-x esup
 ** Clipboard
 #+begin_src emacs-lisp
 (setq select-enable-clipboard t)
+#+end_src
+
+* Agent Shell
+#+begin_src emacs-lisp
+(use-package agent-shell
+    :ensure t)
 #+end_src
