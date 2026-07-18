@@ -915,6 +915,8 @@ To explore the current buffer's syntax tree, use the treesit-explore-mode comman
     (setq treesit-language-source-alist
           '((bash "https://github.com/tree-sitter/tree-sitter-bash")
             (cmake "https://github.com/uyha/tree-sitter-cmake")
+            (clojure "https://github.com/sogaiu/tree-sitter-clojure")
+            (commonlisp "https://github.com/theHamsta/tree-sitter-commonlisp")
             (c "https://github.com/tree-sitter/tree-sitter-c")
             (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
             (css "https://github.com/tree-sitter/tree-sitter-css")
@@ -924,6 +926,8 @@ To explore the current buffer's syntax tree, use the treesit-explore-mode comman
             (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
             (html "https://github.com/tree-sitter/tree-sitter-html")
             (hyprlang "https://github.com/tree-sitter-grammars/tree-sitter-hyprlang")
+            (ino "https://github.com/tree-sitter-grammars/tree-sitter-ino")
+            (java "https://github.com/tree-sitter/tree-sitter-java")
             (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
             (json "https://github.com/tree-sitter/tree-sitter-json")
             (make "https://github.com/alemuller/tree-sitter-make")
