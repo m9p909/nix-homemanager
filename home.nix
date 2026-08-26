@@ -4,6 +4,8 @@
   ...
 }:
 {
+  imports = [ ./apps/emacs.nix ];
+
   nixpkgs.config.allowUnfree = true;
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -89,6 +91,8 @@
     pkgs.scalafmt # Scala code formatter
     pkgs.metals # Scala language server (for editor LSP)
 
+    pkgs.emacs
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -154,7 +158,10 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     CC = "/usr/bin/clang";
+    NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
   };
+
+  home.sessionPath = [ "${config.home.homeDirectory}/.npm-global/bin" ];
 
   programs.neovim = {
     enable = true;

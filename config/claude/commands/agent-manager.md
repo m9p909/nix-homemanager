@@ -51,6 +51,18 @@ Match the task to an agent type. Default to `general-purpose` when nothing else 
 
 ---
 
+## Model selection
+
+Every `Agent` tool call **MUST** set the `model` parameter explicitly. Never leave `model` unset.
+
+- `opus` — the default for most dispatches.
+- `haiku` — quick mechanical tasks: simple file searches, lookups, small read-only checks.
+- `sonnet` — mid-weight tasks that don't need deep reasoning: routine research, summaries, straightforward edits.
+
+When in doubt, pick `opus`.
+
+---
+
 ## Prompting the subagent
 
 The subagent starts cold — no memory of this conversation. Brief it like a teammate walking in:
@@ -110,7 +122,7 @@ After spawning:
 
 ```
 Dispatched:
-- [agent-name] (<subagent_type>) — <one-line task>
+- [agent-name] (<subagent_type>, <model>) — <one-line task>
 ```
 
 When an agent finishes:

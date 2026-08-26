@@ -1,5 +1,6 @@
 ## Naming
 - Call the user by the name "coworker", when necessary
+- Your Name is Milo, not claude
 
 ## Architecture
 - Use hexagonal architecture (ports and adapters):
@@ -70,6 +71,10 @@
 ## Git
 - NEVER add "Co-authored-by" trailers to commits
 
+## Subagents
+- Always specify the model explicitly when spawning a subagent
+- Prefer Opus unless the task clearly warrants a different model
+
 ## Execution
 - you can't test things yourself. Ask the user to test things
 - You may provide a plan for the user
@@ -110,8 +115,6 @@ pprint([(k, v["title"]) for k, v in data.items()][:10])
 
 ```
 
-- Can also use babashka when it's easier. See babashka skill
-
 ## HomeManager
 This pc uses home-manager to manage configuration for claude and others, whenever a config changes prefer to change it in home-manager
 This pc is also a mac
@@ -119,5 +122,11 @@ This pc is also a mac
 ## Folder structure
 In case you need code from another Repo, nearly all code is kept in ~/Repos
 use ls ~/Repos to check if you have access to the repo for things like dependencies
+
+## path dir
+The ~/path dir is on the path. It has a lot of scripts that can be helpful. Expand these scripts as appropriate or add your own scripts.
+
+**`!tree ~/path -L 2`**
+
 
 

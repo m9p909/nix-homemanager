@@ -911,66 +911,65 @@ To explore the current buffer's syntax tree, use the treesit-explore-mode comman
 
 *To use it, remove :tangle no from the beginning of the source code block.*
 #+begin_src emacs-lisp
-    (setq treesit-language-source-alist
-          '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-            (cmake "https://github.com/uyha/tree-sitter-cmake")
-            (c "https://github.com/tree-sitter/tree-sitter-c")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-            (css "https://github.com/tree-sitter/tree-sitter-css")
-            (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-            (gdscript "https://github.com/PrestonKnopp/tree-sitter-gdscript")
-            (go "https://github.com/tree-sitter/tree-sitter-go")
-            (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
-            (html "https://github.com/tree-sitter/tree-sitter-html")
-            (hyprlang "https://github.com/tree-sitter-grammars/tree-sitter-hyprlang")
-            (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-            (json "https://github.com/tree-sitter/tree-sitter-json")
-            (make "https://github.com/alemuller/tree-sitter-make")
-            (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-            (python "https://github.com/tree-sitter/tree-sitter-python")
-            (rust "https://github.com/tree-sitter/tree-sitter-rust")
-            (toml "https://github.com/tree-sitter/tree-sitter-toml")
-            (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-            (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-            (vue "https://github.com/ikatyang/tree-sitter-vue")
-            (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+        (setq treesit-language-source-alist
+              '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+                (css "https://github.com/tree-sitter/tree-sitter-css")
+                (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+                (go "https://github.com/tree-sitter/tree-sitter-go")
+                (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+                (html "https://github.com/tree-sitter/tree-sitter-html")
+                (hyprlang "https://github.com/tree-sitter-grammars/tree-sitter-hyprlang")
+                (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+                (json "https://github.com/tree-sitter/tree-sitter-json")
+                (make "https://github.com/alemuller/tree-sitter-make")
+                (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+                (python "https://github.com/tree-sitter/tree-sitter-python")
+                (rust "https://github.com/tree-sitter/tree-sitter-rust")
+                (toml "https://github.com/tree-sitter/tree-sitter-toml")
+                (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+                (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+                (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+                (groovy "https://github.com/murtaza64/tree-sitter-groovy")
+                (java "https://github.com/tree-sitter/java-tree-sitter")
 
-    (defun start/install-treesit-grammars ()
-      "Install missing treesitter grammars"
-      (interactive)
-      (dolist (grammar treesit-language-source-alist)
-        (let ((lang (car grammar)))
-          (unless (treesit-language-available-p lang)
-            (treesit-install-language-grammar lang)))))
+    ))
 
-    ;; Call this function to install missing grammars
-    (add-hook 'after-init-hook #'start/install-treesit-grammars)
+        (defun start/install-treesit-grammars ()
+          "Install missing treesitter grammars"
+          (interactive)
+          (dolist (grammar treesit-language-source-alist)
+            (let ((lang (car grammar)))
+              (unless (treesit-language-available-p lang)
+                (treesit-install-language-grammar lang)))))
 
-    ;; Optionally, add any additional mode remappings not covered by defaults
-    (setq major-mode-remap-alist
-          '((yaml-mode . yaml-ts-mode)
-            (sh-mode . bash-ts-mode)
-            (c-mode . c-ts-mode)
-            (c++-mode . c++-ts-mode)
-            (css-mode . css-ts-mode)
-            (python-mode . python-ts-mode)
-            (mhtml-mode . html-ts-mode)
-            (javascript-mode . js-ts-mode)
-            (js-json-mode . json-ts-mode)
-            (typescript-mode . typescript-ts-mode)
-            (conf-toml-mode . toml-ts-mode)
-            (gdscript-mode . gdscript-ts-mode)
-            ))
-    (setq treesit-font-lock-level 3)
+        ;; Call this function to install missing grammars
+        (add-hook 'after-init-hook #'start/install-treesit-grammars)
 
-    ;; Or if there is no built in mode
-    (use-package cmake-ts-mode :ensure nil :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
-    (use-package go-mod-ts-mode :ensure nil :mode "\\.mod\\'")
-    (use-package lua-ts-mode :ensure nil :mode "\\.lua\\'")
-    (use-package rust-ts-mode :ensure nil :mode "\\.rs\\'")
-    (use-package typescript-ts-mode :ensure nil :mode "\\.ts\\'")
-    (use-package tsx-ts-mode :ensure nil :mode "\\.tsx\\'")
-    (use-package yaml-ts-mode :ensure nil :mode ("\\.yaml\\'" "\\.yml\\'"))
+        ;; Optionally, add any additional mode remappings not covered by defaults
+        (setq major-mode-remap-alist
+              '((yaml-mode . yaml-ts-mode)
+                (sh-mode . bash-ts-mode)
+                (c-mode . c-ts-mode)
+                (c++-mode . c++-ts-mode)
+                (css-mode . css-ts-mode)
+                (python-mode . python-ts-mode)
+                (mhtml-mode . html-ts-mode)
+                (javascript-mode . js-ts-mode)
+                (js-json-mode . json-ts-mode)
+                (typescript-mode . typescript-ts-mode)
+                (conf-toml-mode . toml-ts-mode)
+                (gdscript-mode . gdscript-ts-mode)
+                ))
+        (setq treesit-font-lock-level 3)
+
+        ;; Or if there is no built in mode
+        (use-package cmake-ts-mode :ensure nil :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+        (use-package go-mod-ts-mode :ensure nil :mode "\\.mod\\'")
+        (use-package lua-ts-mode :ensure nil :mode "\\.lua\\'")
+        (use-package rust-ts-mode :ensure nil :mode "\\.rs\\'")
+        (use-package typescript-ts-mode :ensure nil :mode "\\.ts\\'")
+        (use-package tsx-ts-mode :ensure nil :mode "\\.tsx\\'")
+        (use-package yaml-ts-mode :ensure nil :mode ("\\.yaml\\'" "\\.yml\\'"))
 #+end_src
 
 *** Writing your own syntax highlight with treesitter
@@ -1035,6 +1034,15 @@ Use C-SPC tab to uncomment the lines.
     (use-package cider
       :after clojure-mode
       :hook (clojure-mode . cider-mode))
+#+end_src
+
+*** Markdown Mode
+
+#+begin_src emacs-lisp
+    (use-package markdown-mode
+      :mode (("README\\.md\\'" . gfm-mode)
+             ("\\.md\\'" . markdown-mode)
+             ("\\.markdown\\'" . markdown-mode)))
 #+end_src
 
 *** Org Mode
