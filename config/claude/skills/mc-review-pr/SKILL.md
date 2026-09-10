@@ -14,7 +14,7 @@ Code review the given pull request: "$ARGUMENTS"
 1. If no PR number is provided in the args, use `gh pr list` to show open PRs
 2. If a PR number is provided, use `gh pr view <number>` to get PR details
 3. Use `gh pr diff <number>` to get the diff
-4. Read any CLAUDE.md files in the repo root and in directories touched by the PR
+4. Read any agent rules files in the repo root and in directories touched by the PR: CLAUDE.md, AGENTS.md, .cursorrules, and .cursor/rules/ — apply their rules to the review
 5. Determine which review dimensions apply (see below) and Read the relevant files
 6. Analyze the changes and provide a thorough code review
 
@@ -28,7 +28,7 @@ Code review the given pull request: "$ARGUMENTS"
 ## Review focus
 
 - Code correctness and logic errors
-- CLAUDE.md and project convention compliance
+- Agent rules (CLAUDE.md, cursor rules) and project convention compliance
 - Performance implications
 - Error handling quality
 
@@ -45,6 +45,7 @@ After analyzing the diff, Read ONLY the dimension files relevant to this PR's ch
 | User-facing text | `dimensions/user-facing-text.md` | Includes user-facing strings in the API, error messages, or UI text |
 | API contract | `dimensions/api-contract.md` | Adds or modifies API endpoints, routes, or controllers |
 | Concurrency | `dimensions/concurrency.md` | Touches DB access, queues, locks, thread pools, or external service calls |
+| Agent rules files | `dimensions/agent-rules.md` | Adds or modifies CLAUDE.md, AGENTS.md, .cursorrules, or files under .cursor/rules/ |
 
 Use Read to load each relevant dimension file from the `dimensions/` directory relative to this skill, then apply its checklist to the PR diff.
 

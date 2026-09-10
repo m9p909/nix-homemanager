@@ -5,3 +5,5 @@ For code that touches shared resources (DB, queues, external services, caches), 
 - **Lock ordering**: consistent acquisition order across the codebase to prevent deadlocks
 - **Timeout configuration**: external calls and DB queries have explicit timeouts; no unbounded waits
 - **Idempotency**: retryable operations (queue consumers, webhook handlers, cron jobs) are idempotent — repeated execution produces the same result
+
+For Java thread-safety specifics (check-then-act races, @Async proxy traps, CompletableFuture error handling, ConcurrentHashMap pitfalls), Read `~/.claude/skills/concurrency-review/SKILL.md`.

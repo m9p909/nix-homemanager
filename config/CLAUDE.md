@@ -13,6 +13,7 @@
   - Prefer composition over inheritance — never use inheritance
   - Use interfaces/protocols to define ports; inject adapters via constructor
   - Avoid the generic terms "Service" or "Manager", they are appropriate but prefer more specific terms like provider, -inator, downloader, orchestrator, handler, processor
+  - Prefer `Repository` over `Store` for persistence/data-access types
 
 ## Code Style
 - Defensive programming: prefer to log an error and/or fail instead of returning and continuing silently
@@ -39,6 +40,8 @@
 - Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
 - Prefer zero comments. Code should be readable on its own. Comments often indicate insufficient decomposition or poor naming
 - Dont add comments
+- Zero-comments beats matching surrounding style: when editing a code region, delete its comments, even pre-existing ones
+- If a comment must survive, max 2 lines, only the non-obvious why. Never touch `//go:` directives or build-constraint comments
 
 
 ## Planning
@@ -73,7 +76,8 @@
 
 ## Subagents
 - Always specify the model explicitly when spawning a subagent
-- Prefer Opus unless the task clearly warrants a different model
+- Pick the least powerful model that handles the role: mechanical/well-specified work → haiku or sonnet; integration and debugging → sonnet; architecture, design, review → opus
+- No multi-agent review fan-outs for small diffs — review inline. Reserve fan-outs for explicitly requested thorough audits
 
 ## Execution
 - you can't test things yourself. Ask the user to test things
@@ -84,6 +88,11 @@
 - When types are optional, prefer to add types
 - When describing your actions use specific line numbers
 - Prefer to add new code as new functions instead of modifying code, to clearly identify the change to the reader. 
+- Never do arithmetic mentally — run every calculation (unit conversions, sizing, percentages) through `python3 -c` or babashka, and instruct subagents to do the same
+- When committed code fails locally but CI is green, investigate the local environment first (gitignored config files, env vars, stale containers) before editing code
+- Dont trust build/test exit codes alone — grep the saved log for errors
+- Verify the committed tree (`git grep HEAD`), not the working tree, before declaring batch work done
+- `gh run view --log` truncates long jobs — use `gh api repos/OWNER/REPO/actions/jobs/<id>/logs` for full logs
 
 ## Logging
 - Debug logs should be for information that is often unneccessary to understand how the system is working
@@ -91,6 +100,7 @@
 - Warning logs are for possible failures, but unsure
 - Info logs are the default, and should be used by anything else
 - Raw string data should not be logged most of the time. Enums can be logged, ints can be logged
+- Never log raw payloads or parse-exception messages — they can carry customer data. A drop that fails a job is error, not warn
 
 ## Questions
 - Use specific line numbers and files for answering questions
@@ -115,9 +125,19 @@ pprint([(k, v["title"]) for k, v in data.items()][:10])
 
 ```
 
+## Skills
+- Keep SKILL.md minimal; point the agent at rule files as the single source of truth — paraphrased rules drift
+- `${CLAUDE_SKILL_DIR}` is substituted in skill bodies; `${CLAUDE_PLUGIN_ROOT}` is not
+- Large `` !`command` `` injections (over ~2KB) get persisted with only a preview — tell the agent to Read the persisted file instead
+
 ## HomeManager
 This pc uses home-manager to manage configuration for claude and others, whenever a config changes prefer to change it in home-manager
 This pc is also a mac
+
+## This machine
+- `docker` is often not on Claude's PATH; use `/Applications/Docker.app/Contents/Resources/bin/docker` — dont conclude docker is absent
+- `~/.zshrc` exports `MAAS_ID=jclarke`, which breaks maas test suites — run them with `MAAS_ID=test` or `env -u MAAS_ID`
+- Java repos split JDKs: maas-cloud-agent-k8s and hosted-fleet need 25, maas-core and maas-cloud-agent-lib need 17 — check the pom and set `JAVA_HOME=$(/usr/libexec/java_home -v N)` before Maven
 
 ## Folder structure
 In case you need code from another Repo, nearly all code is kept in ~/Repos
@@ -128,5 +148,12 @@ The ~/path dir is on the path. It has a lot of scripts that can be helpful. Expa
 
 **`!tree ~/path -L 2`**
 
+
+## Jira, Confluence, Githubb and other communication tools
+
+You must NEVER post to these tools unless given explicit permission
+
+## Deploys
+Treat S3 deploys, CloudFront invalidations, and anything replacing a running dev environment as gated — ask first, and approval does not carry across pushes
 
 
