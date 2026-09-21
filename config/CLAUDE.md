@@ -32,6 +32,7 @@
 - Always find root cause. Always look for the root cause of a problem.
 - keep functions small
 - functions do one thing.
+- Call hierarchy follows meaning, not timing: a function may only call functions that are semantically part of its own responsibility. `makeCake` must never call `makeBeef` just because both happen together — a higher-level orchestrator (`makeDinner`) calls each. Same for classes: a class only composes collaborators that belong to its concept
 - Use descriptive function names.
 - Prefer fewer arguments in functions
 - Have no side effects in functions when possible
