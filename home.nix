@@ -79,6 +79,15 @@
     pkgs.maven # Java build tool
     pkgs.gradle # Build automation tool
 
+    # Java Ecosystem
+    pkgs.jdt-language-server # Java language server (for editor LSP)
+    (pkgs.writeShellScriptBin "jdtls-lombok" ''
+      exec ${pkgs.jdt-language-server}/bin/jdtls \
+        --java-executable=${pkgs.jdk21}/bin/java \
+        --jvm-arg=-javaagent:${pkgs.lombok}/share/java/lombok.jar \
+        "$@"
+    '')
+
     # Clojure Ecosystem
     pkgs.clojure # Clojure language
     pkgs.babashka # Native Clojure scripting

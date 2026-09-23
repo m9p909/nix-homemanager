@@ -198,7 +198,7 @@ Cap: **5 iterations**. If not converged after 5, abort with a non-zero exit and 
 For each iteration:
 
 1. **Review**: Use the `Agent` tool (model: opus) with prompt:
-   > Run the skill `/em-experimental:review-pr <PR-URL>`.
+   > Run the skill `/mc-review-pr <PR-URL>`.
    > Return the full review output verbatim, including the verdict line.
 
 2. **Verdict check**:
