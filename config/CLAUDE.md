@@ -78,7 +78,6 @@
 ## Subagents
 - Always specify the model explicitly when spawning a subagent
 - Pick the least powerful model that handles the role: mechanical/well-specified work → haiku or sonnet; integration and debugging → sonnet; architecture, design, review → opus
-- No multi-agent review fan-outs for small diffs — review inline. Reserve fan-outs for explicitly requested thorough audits
 
 ## Execution
 - you can't test things yourself. Ask the user to test things

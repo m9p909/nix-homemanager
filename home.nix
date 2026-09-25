@@ -51,7 +51,7 @@
     pkgs.gh # GitHub CLI
     pkgs.gcc # C compiler (for Avante plugin builds)
     pkgs.gnumake # Build tool (for Avante plugin builds)
-    pkgs.go_1_25
+    pkgs.go_1_26
     pkgs.nodejs_24 # Node.js LTS runtime
 
     # Git Enhancements
