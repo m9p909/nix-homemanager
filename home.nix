@@ -36,6 +36,8 @@
     (pkgs.python313.withPackages (
       ps: with ps; [
         requests
+        numpy
+        pillow
       ]
     ))
 
@@ -168,6 +170,8 @@
     EDITOR = "nvim";
     CC = "/usr/bin/clang";
     NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
+    HYPERFRAMES_PYTHON = "${config.home.homeDirectory}/.cache/hyperframes/tts/venv/bin/python";
+    HYPERFRAMES_NO_TELEMETRY = "1";
   };
 
   home.sessionPath = [ "${config.home.homeDirectory}/.npm-global/bin" ];
