@@ -137,7 +137,7 @@ This pc is also a mac
 ## This machine
 - `docker` is often not on Claude's PATH; use `/Applications/Docker.app/Contents/Resources/bin/docker` — dont conclude docker is absent
 - `~/.zshrc` exports `MAAS_ID=jclarke`, which breaks maas test suites — run them with `MAAS_ID=test` or `env -u MAAS_ID`
-- Java repos split JDKs: maas-cloud-agent-k8s and hosted-fleet need 25, maas-core and maas-cloud-agent-lib need 17 — check the pom and set `JAVA_HOME=$(/usr/libexec/java_home -v N)` before Maven
+- All Java repos (maas-core, maas-cloud-agent-k8s, maas-cloud-agent-lib, hosted-fleet) are on Java 25 now — set `JAVA_HOME=$(/usr/libexec/java_home -v 25)` before Maven
 
 ## Folder structure
 In case you need code from another Repo, nearly all code is kept in ~/Repos
